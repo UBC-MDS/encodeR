@@ -7,6 +7,6 @@ Authors@R:
            role = c("aut"),
            email = "brayden.tang1@gmail.com")
 Description: Employs many modern ways to encode categorical features to hopefully produce more informative encodings.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
