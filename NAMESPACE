@@ -2,3 +2,4 @@
 
 export(cat_boost_encoder)
 export(conjugate_encoder)
+export(target_encoder)
