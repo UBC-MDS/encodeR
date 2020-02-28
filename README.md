@@ -39,7 +39,8 @@ problems.
     features, which will create K-1 columns of 0/1 indicator variables.
 5.  Conjugate encoder: calculates encodings based off Bayes rule using
     conjugate priors and the mean of the posterior distribution (will do
-    this if time permits out of curiosity).
+    this if time permits out of curiosity). The original paper for this
+    method can be found [here.](https://arxiv.org/pdf/1904.13001.pdf)
 
 ## Where encodeR Fits in The R Ecosystem
 

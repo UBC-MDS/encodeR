@@ -26,7 +26,7 @@ should only contain two unique values.}
 the encodings.}
 
 \item{cat_columns}{A character vector containing the names of the categorical columns in the tibble
-that should be encoding.}
+that should be encoded.}
 
 \item{prior}{A number in [0, inf] that acts as pseudo counts when calculating the encodings. Useful for
 preventing encodings of 0 for when the training set does not have particular categories observed

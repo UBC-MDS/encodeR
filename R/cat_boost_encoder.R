@@ -11,7 +11,7 @@
 #' @param n_permutations An integer representing the number of permutations to use when calculating
 #'  the encodings.
 #' @param cat_columns A character vector containing the names of the categorical columns in the tibble
-#' that should be encoding.
+#' that should be encoded.
 #' @param prior A number in [0, inf] that acts as pseudo counts when calculating the encodings. Useful for
 #'  preventing encodings of 0 for when the training set does not have particular categories observed
 #'  in the test set. A larger value gives less weight to what is observed in the training set. A value
