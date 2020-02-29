@@ -3,7 +3,7 @@
 
 ## Development Lead
 
-* Bronwyn Baillie <email>
+* Bronwyn Baillie <Baillie.bronwyn@gmail.com>
 * Brayden Tang <brayden.tang1@gmail.com>
 * Robert Pimentel <email>
 * Shiying Wang <fsywang@ucdavis.edu>
