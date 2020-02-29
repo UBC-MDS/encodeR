@@ -15,18 +15,17 @@ the resulting data frames returned will be preprocessed with a specific
 encoding of the categorical features. At a high level, this package
 automates the preprocessing of categorical features in ways that exploit
 particular correlations between the different categories and the data
-without increasing the dimension of the dataset, like in one hot
+**without** increasing the dimension of the dataset, like in one hot
 encoding. Thus, through the more deliberate handling of these
 categorical features, higher model performance can possibly be achieved.
 
 ## Features
 
-This package contains four functions, each that accept two pandas
-DataFrames representing the train and test sets. Depending on the
-method, the functions will also require additional arguments depending
-on how the encodings are calculated for each category. For now, we aim
-to have our package support binary classification and regression
-problems.
+This package contains five functions, each that accept two tibbles
+representing the train and test sets. Depending on the method, the
+functions will also require additional arguments depending on how the
+encodings are calculated for each category. For now, we aim to have our
+package support binary classification and regression problems.
 
 1.  Catboost encoder: calculates encodings based off sequential counts.
     The resulting encoding for a category is based on the average of
@@ -56,12 +55,12 @@ target encoding, and one hot encoding. From our research, we could not
 find a package that implements catboost encoding or conjugate encoding.
 
 The problem with the R ecosystem for categorical encoding is that there
-is not one package that contains all of the most popular encoders. The
-result is that a user has to import many different packages to
-experiment with different encoders, each with their own syntax and
-interface. Our package hopes to give users one, coherent framework for
-encoding categorical features in R. Furthermore, methods that have not
-been packaged in R like catboost encoding and conjugate encoding will
+is not one package that contains all of the most popular encoders. This
+results in users having to import many different packages to experiment
+with different encoders, each with their own syntax and interface. Our
+package hopes to give users one, coherent framework for encoding
+categorical features in R. Furthermore, methods that have not been
+packaged in R like CatBoost encoding and conjugate encoding will
 directly add something new to the R ecosystem.
 
 ## Installation
