@@ -15,7 +15,7 @@ target_encoder(X_train, X_test, y, cat_columns, prior = 0.5, min_samples = 1)
 If the objective is "binary", then the vector should only contain two unique values.}
 
 \item{cat_columns}{A character vector containing the names of the categorical columns in the tibble
-that should be encoding.}
+that should be encoded.}
 
 \item{prior}{A number in [0, inf] that acts as pseudo counts when calculating the encodings. Useful for
 preventing encodings of 0 for when the training set does not have particular categories observed
@@ -28,7 +28,7 @@ The default value is 1.}
 }
 \value{
 A list containing with processed training and test sets, in which the named categorical
-columns are replaced with their encoded.
+columns are replaced with their encodings.
 }
 \description{
 This function encodes categorical variables with average target values for each category.
