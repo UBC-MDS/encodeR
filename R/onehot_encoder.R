@@ -1,21 +1,21 @@
-#' frequency_encoder
+#' onehot_encoder
 #'
-#' This function encodes categorical variables using the frequencies of each category.
+#' This function encodes categorical variables using the popular onehot method for each category.
 #'
 #' @param X_train A tibble representing the training data set containing some categorical features/columns.
 #' @param X_test A tibble representing the test set, containing some set of categorical features/columns.
-#' @param cat_columns A character vector containing the names of the categorical columns in the tibble
-#' that should be encoded.
+#' @param cat_columns A character vector containing the names of the categorical columns in the tibble or
+#' data frame that should be encoded.
 #'
 #' @return A list with processed training and test sets, in which the named categorical
 #' columns are replaced with their encodings.
 #' @export
 #'
-#' @examples frequency_encoder(
+#' @examples onehot_encoder(
 #' my_train,
 #' my_test,
 #' cat_columns = c("foo"))
-frequency_encoder <- function(X_train, X_test, cat_columns) {
+onehot_encoder <- function(X_train, X_test, cat_columns) {
 
   out <- list(train_processed, test_processed)
 
