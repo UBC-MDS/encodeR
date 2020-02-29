@@ -34,7 +34,7 @@ For regression, only the uniform quantization method is incorporated here for si
 }
 \value{
 A list containing with processed training and test sets, in which the named categorical
-columns are replaced with their encodings. For regression, the encoder will add one additionaldimension to the original training set since the
+columns are replaced with their encodings. For regression, the encoder will add one additional dimension to the original training set since the
 assumed prior distribution is two dimensional.
 }
 \description{
