@@ -7,7 +7,7 @@
 #' @param cat_columns A character vector containing the names of the categorical columns in the tibble
 #' that should be encoded.
 #'
-#' @return A list containing with processed training and test sets, in which the named categorical
+#' @return A list with processed training and test sets, in which the named categorical
 #' columns are replaced with their encodings.
 #' @export
 #'

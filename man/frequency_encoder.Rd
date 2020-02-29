@@ -15,7 +15,7 @@ frequency_encoder(X_train, X_test, cat_columns)
 that should be encoded.}
 }
 \value{
-A list containing with processed training and test sets, in which the named categorical
+A list with processed training and test sets, in which the named categorical
 columns are replaced with their encodings.
 }
 \description{

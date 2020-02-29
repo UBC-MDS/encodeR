@@ -3,4 +3,5 @@
 export(cat_boost_encoder)
 export(conjugate_encoder)
 export(frequency_encoder)
+export(onehot_encoder)
 export(target_encoder)
