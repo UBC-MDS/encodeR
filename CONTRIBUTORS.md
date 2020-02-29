@@ -5,7 +5,7 @@
 
 * Bronwyn Baillie <Baillie.bronwyn@gmail.com>
 * Brayden Tang <brayden.tang1@gmail.com>
-* Robert Pimentel <email>
+* Robert Pimentel <robilizando@yahoo.com>
 * Shiying Wang <fsywang@ucdavis.edu>
 
 ## Contributors

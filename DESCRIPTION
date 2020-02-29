@@ -6,7 +6,7 @@ Authors@R:
            family = "Tang",
            role = c("aut", "cre"),
            email = "brayden.tang1@gmail.com")
-    person(given = "Florence",
+    person(given = "Shiying",
            family = "Wang",
            role = c("aut", "cre"),
            email = "fsywang@ucdavis.edu") 
@@ -14,6 +14,10 @@ Authors@R:
            family = "Baillie",
            role = c("aut", "cre"),
            email = "Baillie.bronwyn@gmail.com")            
+    person(given = "Robert",
+           family = "Pimentel",
+           role = c("aut", "cre"),
+           email = "robilizando@yahoo.com") 
 Description: Employs many modern ways to encode categorical features to hopefully produce more informative encodings
 License: MIT + file LICENSE
 Encoding: UTF-8
