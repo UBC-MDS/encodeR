@@ -1,7 +1,17 @@
 
-encode_freq <- function(X) {
-  frequencies <- as.data.frame(X)
-  X
+get_encoding <-  function(data, col){
+  out <- data %>%
+    dplyr::group_by(!!sym(col))%>%
+    dplyr::summarise(freq = n())
+}
+
+encode <- function(data,encoding_col,col){
+  encoded_col <- data %>%
+    dplyr::left_join(encoding_col) %>%
+    dplyr::mutate(!!sym(col) := freq) %>%
+    dplyr::select(-freq)
+  data[[sym(col)]] <- encoded_col[[sym(col)]]
+  out <- data
 }
 
 
@@ -14,7 +24,7 @@ encode_freq <- function(X) {
 #' @param cat_columns A character vector containing the names of the categorical columns in the tibble
 #' that should be encoded.
 #'
-#' @return A `list` with processed training and test sets, in which the named categorical
+#' @return A `list` with processed training and test sets (if provided), in which the named categorical
 #' columns are replaced with their encodings.
 #' @export
 #'
@@ -22,26 +32,26 @@ encode_freq <- function(X) {
 #' my_train,
 #' my_test,
 #' cat_columns = c("foo"))
-frequency_encoder <- function(X_train, X_test, cat_columns) {
-  train_processed <- X_train
+frequency_encoder <- function(X_train, X_test = NULL, cat_columns) {
   encodings = list()
-  for (cat in cat_columns) {
-    print(sym(cat))
-    col_df <- X_train %>%
-      dplyr::group_by(!!sym(cat))%>%
-      dplyr::summarise(freq = n())
-    new_col <- X_train %>%
-      dplyr::left_join(col_df)%>%
-      dplyr::mutate(!!sym(cat) := freq)%>%
-      dplyr::select(-freq)
-    train_processed[[sym(cat)]] <- new_col[[sym(cat)]]
-    encodings[[sym(cat)]] <- col_df
+  X_test_included <- !is.null(X_test)
+  if (X_test_included) {
+    for (cat in cat_columns) {
+      print(sym(cat))
+      encoding_col <- get_encoding(X_train, cat)
+      print(encoding_col)
+      X_train <- encode(X_train,encoding_col, cat)
+      print(X_train)
+      X_test <- encode(X_test,encoding_col, cat)
+    }
+    out <- list( "train" = X_train, "test" = X_test)
+  } else {
+    for (cat in cat_columns) {
+      print(sym(cat))
+      col_df <- get_encoding(X_train, cat)
+      X_train <- encode(X_train,col_df, cat)
+    }
+    out <- list( "train" = X_train)
   }
-  
-    #dplyr::mutate_if(.tbl = X_train,
-    #                                  .predicate = ~is.element(deparse(substitute(.x)), cat_columns),
-    #                                  .fun = encode_freq, encodings)
-  test_processed <- X_test
-  out <- list( "train" = train_processed, "test" = test_processed, "encodings" = encodings)
 }
 
