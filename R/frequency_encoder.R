@@ -1,7 +1,9 @@
 
 encode_freq <- function(X) {
+  frequencies <- as.data.frame(X)
   X
 }
+
 
 #' frequency_encoder
 #'
@@ -21,8 +23,19 @@ encode_freq <- function(X) {
 #' my_test,
 #' cat_columns = c("foo"))
 frequency_encoder <- function(X_train, X_test, cat_columns) {
-  train_processed <- dplyr::mutate_if(X_train,~is.element(deparse(substitute(.x)), cat_columns), encode_freq)
+  encodings = list()
+  for (cat in cat_columns) {
+    print(sym(cat))
+    col_df <- X_train %>%
+      dplyr::group_by(!!sym(cat))%>%
+      dplyr::summarise(freq = n())
+    encodings[[sym(cat)]] <- col_df
+  }
+  train_processed <- X_train
+    #dplyr::mutate_if(.tbl = X_train,
+    #                                  .predicate = ~is.element(deparse(substitute(.x)), cat_columns),
+    #                                  .fun = encode_freq, encodings)
   test_processed <- X_test
-  out <- list( "train" = train_processed, "test" = test_processed)
+  out <- list( "train" = train_processed, "test" = test_processed, "encodings" = encodings)
 }
 
