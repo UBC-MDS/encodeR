@@ -4,7 +4,8 @@
 \alias{target_encoder}
 \title{target_encoder}
 \usage{
-target_encoder(X_train, X_test, y, cat_columns, prior = 0.5, min_samples = 1)
+target_encoder(X_train, X_test, y, cat_columns, prior = 0.5,
+  min_samples = 1)
 }
 \arguments{
 \item{X_train}{A tibble representing the training data set containing some categorical features/columns.}

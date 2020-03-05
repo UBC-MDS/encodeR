@@ -4,14 +4,8 @@
 \alias{conjugate_encoder}
 \title{conjugate_encoder}
 \usage{
-conjugate_encoder(
-  X_train,
-  X_test,
-  y,
-  cat_columns,
-  prior_params,
-  objective = "regression"
-)
+conjugate_encoder(X_train, X_test, y, cat_columns, prior_params,
+  objective = "regression")
 }
 \arguments{
 \item{X_train}{A tibble representing the training data set containing some categorical features/columns.}

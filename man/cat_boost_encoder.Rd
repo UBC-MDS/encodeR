@@ -4,15 +4,8 @@
 \alias{cat_boost_encoder}
 \title{cat_boost_encoder}
 \usage{
-cat_boost_encoder(
-  X_train,
-  X_test,
-  y,
-  n_permutations,
-  cat_columns,
-  prior,
-  objective = "regression"
-)
+cat_boost_encoder(X_train, X_test, y, n_permutations, cat_columns, prior,
+  objective = "regression")
 }
 \arguments{
 \item{X_train}{A tibble representing the training data set containing some categorical features/columns.}
