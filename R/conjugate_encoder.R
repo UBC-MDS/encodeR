@@ -10,7 +10,7 @@ library(rlang)
 #' per each category are used as the encodings.
 #'
 #' @param X_train A tibble representing the training data set containing some categorical features/columns.
-#' @param X_test A tibble representing the test set, containing some set of categorical features/columns.
+#' @param X_test An optional tibble representing the test set, containing some set of categorical features/columns. Default = NA.
 #' @param y A numeric vector or character vector representing the target variable. If the objective is "binary", then the vector
 #'  should only contain two unique values.
 #' @param cat_columns A character vector containing the names of the categorical columns in the tibble
@@ -34,7 +34,7 @@ library(rlang)
 #' cat_columns = c("foo"),
 #' prior_params = list(alpha = 3, beta = 3),
 #' objective = "regression")
-conjugate_encoder <- function(X_train, X_test, y, cat_columns, prior_params, objective = "regression") {
+conjugate_encoder <- function(X_train, X_test = NA, y, cat_columns, prior_params, objective = "regression") {
 
     if (!objective %in% c("regression", "binary")) {
       stop("Objective must be regression or binary.")
@@ -43,7 +43,6 @@ conjugate_encoder <- function(X_train, X_test, y, cat_columns, prior_params, obj
     if (any(cat_columns %in% colnames(X_train)) == FALSE) {
       stop("Column does not exist in the training set.")
     }
-
 
     if (objective == "regression") {
 
@@ -104,6 +103,8 @@ conjugate_encoder <- function(X_train, X_test, y, cat_columns, prior_params, obj
       train_processed <- reduce(encodings_list, function(x, y) left_join(x, y, by = NULL)) %>%
         select(-all_of(cat_columns))
 
+      if (!is.na(X_test)) {
+
       encodings_list[[1]] <- X_test
 
       test_encodings_means <- reduce(encodings_list, function(x, y) left_join(x, y, by = NULL)) %>%
@@ -120,6 +121,7 @@ conjugate_encoder <- function(X_train, X_test, y, cat_columns, prior_params, obj
         bind_cols(., test_encodings_var) %>%
         select(-all_of(cat_columns))
 
+      }
 
     } else {
 
@@ -176,6 +178,8 @@ conjugate_encoder <- function(X_train, X_test, y, cat_columns, prior_params, obj
       train_processed <- reduce(encodings_list, function(x, y) left_join(x, y, by = NULL)) %>%
         select(-all_of(cat_columns))
 
+      if (!is.na(X_test)) {
+
       encodings_list[[1]] <- X_test
 
       test_encodings <- reduce(encodings_list, function(x, y) left_join(x, y, by = NULL)) %>%
@@ -186,9 +190,17 @@ conjugate_encoder <- function(X_train, X_test, y, cat_columns, prior_params, obj
       test_processed <- bind_cols(X_test, test_encodings) %>%
         select(-all_of(cat_columns))
 
+      }
+
     }
 
+  if (!is.na(X_test)) {
   out <- list(train_processed, test_processed)
+  } else {
+    out <- list(train_processed)
+  }
+
+  out
 
 }
 

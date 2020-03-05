@@ -47,9 +47,10 @@ test_that("Function does not throw an error if we input invalid arguments", {
 test_that("Function does not return correct output", {
 
   library(readr)
+  library(dplyr)
+  library(tidyr)
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
-
+# TO DO
 
 
 })
