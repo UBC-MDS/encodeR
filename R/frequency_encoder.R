@@ -2,13 +2,13 @@
 get_encoding <-  function(data, col){
   out <- data %>%
     dplyr::group_by(!!rlang::sym(col))%>%
-    dplyr::summarise(freq = n())
+    dplyr::summarise(freq = n()/nrow(data))
 }
 
 encode <- function(data,encoding_col,col){
   encoded_col <- data %>%
     dplyr::left_join(encoding_col) %>%
-    dplyr::mutate(!!rlang::sym(col) := dplyr::if_else(is.na(freq), 0L, freq) # if encoding didn't exist encode value as 0
+    dplyr::mutate(!!rlang::sym(col) := dplyr::if_else(is.na(freq), 0, freq) # if encoding didn't exist encode value as 0
                   ) %>%
     dplyr::select(-freq)
   data[[rlang::sym(col)]] <- encoded_col[[rlang::sym(col)]]
@@ -51,4 +51,3 @@ frequency_encoder <- function(X_train, X_test = NULL, cat_columns) {
     out <- list( "train" = X_train)
   }
 }
-
