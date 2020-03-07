@@ -44,7 +44,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
   }
   # check type of input X_train
   if (!is.data.frame(X_train)) {
-    stop("Type of X_train must be pd.Dataframe.")
+    stop("Type of X_train must be a data frame.")
   }
   # check if length y equals to length X_train
   if (length(y) != nrow(X_train)) {
@@ -69,7 +69,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
       stop("The target variable must be binary.")
     }
     # encode target variable to 1 and 0
-    if (!is_double(y)){
+    if (!is_double(y)) {
       y_new <- case_when(y == unique(y)[1] ~ 0,
                      y == unique(y)[2] ~ 1)
     }
@@ -80,8 +80,8 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
 
   global_mean <- mean(y_new, na.rm = TRUE)
 
-  if (is.null(X_test)){
-    for(i in seq_along(cat_columns)){
+  if (is.null(X_test)) {
+    for (i in seq_along(cat_columns)) {
       column <- cat_columns[i]
       # calculate target counts for each category and save to dictionary
       search_table <- train_processed %>%
@@ -99,11 +99,11 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
       }
     out <- train_processed
 
-    } else{
+    } else {
 
       # check type of input X_test
       if (!is.data.frame(X_test)) {
-        stop("Type of X_test must be pd.Dataframe.")
+        stop("Type of X_test must be a data frame.")
       }
 
       # check if X_test contains cat_columns
@@ -113,7 +113,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
 
       test_processed <- X_test
 
-      for(i in seq_along(cat_columns)){
+      for (i in seq_along(cat_columns)) {
         column <- cat_columns[i]
         # calculate target counts for each category and save to dictionary
         search_table <- train_processed %>%
