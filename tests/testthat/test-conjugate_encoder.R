@@ -125,14 +125,14 @@ test_that("Function for regression does not return correct output", {
   test_data <- readr::read_csv("../../data/testing_data.csv")
 
   train1 <- test_data %>%
-    filter(train_test_1 == "train")
+    dplyr::filter(train_test_1 == "train")
   test1 <- test_data %>%
-    filter(train_test_1 == "test")
+    dplyr::filter(train_test_1 == "test")
 
   train2 <- test_data %>%
-    filter(train_test_3 == "train")
+    dplyr::filter(train_test_3 == "train")
   test2 <- test_data %>%
-    filter(train_test_3 == "test")
+    dplyr::filter(train_test_3 == "test")
 
   # Known true values for train_test_1. Train_test_1 is a standard dataset.
   train_true_mean_1 <- c(rep(0.773327, 7), rep(0.627191, 6), rep(-0.719982, 7))
@@ -191,14 +191,14 @@ test_that("Function for binary classification does not return correct output", {
   test_data <- readr::read_csv("../../data/testing_data.csv")
 
   train1 <- test_data %>%
-    filter(train_test_1 == "train")
+    dplyr::filter(train_test_1 == "train")
   test1 <- test_data %>%
-    filter(train_test_1 == "test")
+    dplyr::filter(train_test_1 == "test")
 
   train2 <- test_data %>%
-    filter(train_test_3 == "train")
+    dplyr::filter(train_test_3 == "train")
   test2 <- test_data %>%
-    filter(train_test_3 == "test")
+    dplyr::filter(train_test_3 == "test")
 
   # Known true values for train_test_1. Train_test_1 is a standard dataset.
   train_true_mean_1 <- rep(0.285714, 20)
