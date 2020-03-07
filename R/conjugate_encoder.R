@@ -239,7 +239,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
     }
 
   # Output.
-  if (!is.na(X_test)) {
+  if (!is.null(X_test)) {
   out <- list(train_processed, test_processed)
   } else {
     out <- list(train_processed)
