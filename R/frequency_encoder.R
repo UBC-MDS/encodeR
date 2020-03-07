@@ -42,13 +42,13 @@ frequency_encoder <- function(X_train, X_test = NULL, cat_columns) {
       X_train <- encode(X_train,encoding_col, cat)
       X_test <- encode(X_test,encoding_col, cat)
     }
-    out <- list( "train_processed" = X_train, "test_processed" = X_test)
+    out <- list( "train" = X_train, "test" = X_test)
   } else {
     for (cat in cat_columns) {
       col_df <- get_encoding(X_train, cat)
       X_train <- encode(X_train,col_df, cat)
     }
-    out <- list( "data_processed" = X_train)
+    out <- list( "train" = X_train)
   }
 }
 
