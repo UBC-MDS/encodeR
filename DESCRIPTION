@@ -28,5 +28,6 @@ Imports:
     readr,
     rlang,
     tidyr,
-    purrr,
-    testthat
+    purrr
+Suggests: 
+    testthat (>= 2.1.0)
