@@ -32,15 +32,6 @@ library(readr)
 #' prior = 0.5,
 #' objective = "regression")
 
-
-data <- read_csv("../data/testing_data.csv")
-
-train1 <- data %>% filter(train_test_1 == 'train')
-test1 <- data %>% filter(train_test_1 == 'test')
-
-train2 <- data %>% filter(train_test_3 == 'train')
-test2 <- data %>% filter(train_test_3 == 'test')
-
 target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, objective = "regression") {
 
   # check input of objective
