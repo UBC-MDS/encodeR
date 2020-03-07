@@ -73,6 +73,10 @@ test_that("Function does not run if we pass factors or characters as our target 
 
   # Test for different y types.
 
+  library(readr)
+
+  test_data <- readr::read_csv("../../data/testing_data.csv")
+
   # IF we pass a factor, does the function still work?
   expect_type(conjugate_encoder(
     X_train = test_data,
@@ -98,6 +102,10 @@ test_that("Function does not run if we pass factors or characters as our target 
 test_that("Function does not run if we do not pass a test set.", {
 
   # Test for the NULL X_test case.
+
+  library(readr)
+
+  test_data <- readr::read_csv("../../data/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
   expect_type(conjugate_encoder(
