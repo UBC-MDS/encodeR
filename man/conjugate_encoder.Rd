@@ -6,7 +6,7 @@
 \usage{
 conjugate_encoder(
   X_train,
-  X_test,
+  X_test = NULL,
   y,
   cat_columns,
   prior_params,
@@ -16,7 +16,7 @@ conjugate_encoder(
 \arguments{
 \item{X_train}{A tibble representing the training data set containing some categorical features/columns.}
 
-\item{X_test}{A tibble representing the test set, containing some set of categorical features/columns.}
+\item{X_test}{An optional tibble representing the test set, containing some set of categorical features/columns. Default = NULL.}
 
 \item{y}{A numeric vector or character vector representing the target variable. If the objective is "binary", then the vector
 should only contain two unique values.}
@@ -25,8 +25,8 @@ should only contain two unique values.}
 that should be encoded.}
 
 \item{prior_params}{A list with named parameters that specify the prior assumed. For regression, this requires
-a dictionary with four keys and four values: mu, vega, alpha, beta. All must be real numbers, and must be greater than 0
-except for mu, which can be negative. For binary classification, this requires a dictionary with two keys and two values: alpha, beta. All must be real
+a dictionary with four keys and four values: mu, vega, alpha, beta. All must be real numbers, alpha should be greater than 0, beta and vega should be greater than 0.
+mu can be negative. For binary classification, this requires a list with two keys and two values: alpha, beta. All must be real
 numbers and be greater than 0.}
 
 \item{objective}{A string, either "regression" or "binary" specifying the problem. Default is regression.
