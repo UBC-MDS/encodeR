@@ -1,6 +1,6 @@
 test_that("frequency_encoder() does not replace categories with no encodings with 0", {
   
-  testing_data <- readr::read_csv("../../data/testing_data.csv")
+  testing_data <- readr::read_csv("../testdata/testing_data.csv")
   train <- testing_data %>%
     dplyr::filter(train_test_3 == 'train')
   test <- testing_data %>%
@@ -12,7 +12,7 @@ test_that("frequency_encoder() does not replace categories with no encodings wit
 })
 
 test_that("frequency_encoder() does not produce the expected encoding", {
-  testing_data <- readr::read_csv("../../data/testing_data.csv")
+  testing_data <- readr::read_csv("../testdata/testing_data.csv")
   train <- testing_data %>%
     dplyr::filter(train_test_1 == 'train')
   test <- testing_data %>%
@@ -24,7 +24,7 @@ test_that("frequency_encoder() does not produce the expected encoding", {
 })
 
 test_that("frequency_encoder() does not produce a list with correct dimensions", {
-  testing_data <- readr::read_csv("../../data/testing_data.csv")
+  testing_data <- readr::read_csv("../testdata/testing_data.csv")
   train <- testing_data %>%
     dplyr::filter(train_test_1 == 'train')
   test <- testing_data %>%
