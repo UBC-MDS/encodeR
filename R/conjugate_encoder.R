@@ -220,7 +220,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
       train_processed <- reduce(encodings_list, function(x, y) left_join(x, y, by = NULL)) %>%
         select(-all_of(cat_columns))
 
-      if (!is.na(X_test)) {
+      if (!is.null(X_test)) {
 
       encodings_list[[1]] <- X_test
 
