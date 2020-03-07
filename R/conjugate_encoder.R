@@ -34,7 +34,7 @@ library(rlang)
 #' cat_columns = c("foo"),
 #' prior_params = list(alpha = 3, beta = 3),
 #' objective = "regression")
-conjugate_encoder <- function(X_train, X_test = NA, y, cat_columns, prior_params, objective = "regression") {
+conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_params, objective = "regression") {
 
   # Check inputs for incorrect values.
 
@@ -248,4 +248,3 @@ conjugate_encoder <- function(X_train, X_test = NA, y, cat_columns, prior_params
   out
 
 }
-
