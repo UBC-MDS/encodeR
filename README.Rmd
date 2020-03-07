@@ -36,25 +36,76 @@ The problem with the R ecosystem for categorical encoding is that there is not o
 
 ## Installation
 
-You can install the released version of encodeR from [CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of encodeR from [CRAN](https://CRAN.R-project.org) with: -->
 
-``` r
-install.packages("encodeR")
-```
+<!-- ``` r -->
+<!-- install.packages("encodeR") -->
+<!-- ``` -->
 
-And the development version from [GitHub](https://github.com/) with:
+Currently, this package is not yet on CRAN. However, you can install the latest development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("UBC-MDS/encodeR")
 ```
-## Example
 
-This is a basic example which shows you how to solve a common problem:
+## Dependencies
+- dplyr
+- readr
+- rlang
+- testthat
+- tidyr
+- purrr
+- magrittr
+
+## Examples
+
+This package can allow one to fit many different kinds of encodings for categorical features easily. For example, one can fit a conjugate encoding of some categorical variables by:
 
 ```{r example}
 library(encodeR)
-## basic example code
+library(tidyverse)
+
+my_data <- tibble(
+  fruit = c("Apple", "Orange", "Apple", "Apple", "Banana"),
+  color = c("Red", "Blue", "Orange", "Red", "Red"),
+  target = c(1, 0, 1, 1, 1)
+)
+
+conjugate_encoder(
+  my_data,
+  y = my_data$target,
+  cat_columns = c("fruit", "color"),
+  prior_params = list(alpha = 3, beta = 10), 
+  objective = "binary"
+  )
+```
+
+This package can also fit regression data sets, and automatically join the learned encodings on a held out test set if the user wants to:
+
+```{r}
+
+my_data_reg <- tibble(
+  fruit = c("Apple", "Orange", "Apple", "Apple", "Banana", "Orange", "Apple"),
+  color = c("Red", "Blue", "Orange", "Red", "Red", "Blue", "Green"),
+  target = c(3.5, 10, 10.912, 3.14159, 10, 15, 1000)
+)
+
+train <- my_data_reg[1:5, ]
+test <- my_data_reg[6:7, ]
+
+encodings <- target_encoder(
+  train,
+  test,
+  y = train$target,
+  cat_columns = c("fruit", "color"),
+  prior = 0.8, 
+  objective = "regression" 
+)
+
+encodings[[1]]
+encodings[[2]]
+
 ```
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->

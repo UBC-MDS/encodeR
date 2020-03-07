@@ -58,31 +58,119 @@ with different encoders, each with their own syntax and interface. This
 package hopes to give users one, coherent framework for encoding
 categorical features in R. Furthermore, methods that have not been
 packaged in R like conjugate encoding will directly add something new to
-the R ecosystem.
+the R
+ecosystem.
 
 ## Installation
 
-You can install the released version of encodeR from
-[CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of encodeR from [CRAN](https://CRAN.R-project.org) with: -->
 
-``` r
-install.packages("encodeR")
-```
+<!-- ``` r -->
 
-And the development version from [GitHub](https://github.com/) with:
+<!-- install.packages("encodeR") -->
+
+<!-- ``` -->
+
+Currently, this package is not yet on CRAN. However, you can install the
+latest development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("UBC-MDS/encodeR")
 ```
 
-## Example
+## Dependencies
 
-This is a basic example which shows you how to solve a common problem:
+  - dplyr
+  - readr
+  - rlang
+  - testthat
+  - tidyr
+  - purrr
+  - magrittr
+
+## Examples
+
+This package can allow one to fit many different kinds of encodings for
+categorical features easily. For example, one can fit a conjugate
+encoding of some categorical variables by:
 
 ``` r
 library(encodeR)
-## basic example code
+library(tidyverse)
+#> ── Attaching packages ────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+#> ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
+#> ✓ tibble  2.1.3     ✓ dplyr   0.8.4
+#> ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+#> ✓ readr   1.3.1     ✓ forcats 0.4.0
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> x dplyr::filter() masks stats::filter()
+#> x dplyr::lag()    masks stats::lag()
+
+my_data <- tibble(
+  fruit = c("Apple", "Orange", "Apple", "Apple", "Banana"),
+  color = c("Red", "Blue", "Orange", "Red", "Red"),
+  target = c(1, 0, 1, 1, 1)
+)
+
+conjugate_encoder(
+  my_data,
+  y = my_data$target,
+  cat_columns = c("fruit", "color"),
+  prior_params = list(alpha = 3, beta = 10), 
+  objective = "binary"
+  )
+#> Joining, by = "fruit"
+#> Joining, by = "color"
+#> [[1]]
+#> # A tibble: 5 x 3
+#>   target fruit_encoded color_encoded
+#>    <dbl>         <dbl>         <dbl>
+#> 1      1         0.333         0.333
+#> 2      0         0.167         0.167
+#> 3      1         0.333         0.222
+#> 4      1         0.333         0.333
+#> 5      1         0.222         0.333
+```
+
+This package can also fit regression data sets, and automatically join
+the learned encodings on a held out test set if the user wants to:
+
+``` r
+
+my_data_reg <- tibble(
+  fruit = c("Apple", "Orange", "Apple", "Apple", "Banana", "Orange", "Apple"),
+  color = c("Red", "Blue", "Orange", "Red", "Red", "Blue", "Green"),
+  target = c(3.5, 10, 10.912, 3.14159, 10, 15, 1000)
+)
+
+train <- my_data_reg[1:5, ]
+test <- my_data_reg[6:7, ]
+
+encodings <- target_encoder(
+  train,
+  test,
+  y = train$target,
+  cat_columns = c("fruit", "color"),
+  prior = 0.8, 
+  objective = "regression" 
+)
+
+encodings[[1]]
+#> # A tibble: 5 x 3
+#>   fruit color target
+#>   <dbl> <dbl>  <dbl>
+#> 1  6.20  5.96   3.5 
+#> 2  8.89  8.89  10   
+#> 3  6.20  9.40  10.9 
+#> 4  6.20  5.96   3.14
+#> 5  8.89  5.96  10
+encodings[[2]]
+#> # A tibble: 2 x 3
+#>   fruit color target
+#>   <dbl> <dbl>  <dbl>
+#> 1  8.89  8.89     15
+#> 2  6.20  7.51   1000
 ```
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
