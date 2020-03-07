@@ -1,7 +1,5 @@
 test_that("Function does not throw an error if we input invalid arguments", {
 
-  library(readr)
-
   test_data <- readr::read_csv("../../data/testing_data.csv")
 
   # These tests check for errors raised when given invalid/improper inputs.
@@ -73,8 +71,6 @@ test_that("Function does not run if we pass factors or characters as our target 
 
   # Test for different y types.
 
-  library(readr)
-
   test_data <- readr::read_csv("../../data/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
@@ -103,8 +99,6 @@ test_that("Function does not run if we do not pass a test set.", {
 
   # Test for the NULL X_test case.
 
-  library(readr)
-
   test_data <- readr::read_csv("../../data/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
@@ -125,10 +119,6 @@ test_that("Function does not run if we do not pass a test set.", {
 })
 
 test_that("Function for regression does not return correct output", {
-
-  library(readr)
-  library(dplyr)
-  library(tidyr)
 
   # Test for the correct output.
 
@@ -195,10 +185,6 @@ test_that("Function for regression does not return correct output", {
 })
 
 test_that("Function for binary classification does not return correct output", {
-
-  library(readr)
-  library(dplyr)
-  library(tidyr)
 
   # Test for the correct output.
 

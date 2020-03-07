@@ -1,8 +1,3 @@
-library(tidyr)
-library(dplyr)
-library(purrr)
-library(rlang)
-library(readr)
 #' target_encoder
 #'
 #' This function encodes categorical variables with average target values for each category.

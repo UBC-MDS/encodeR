@@ -1,8 +1,3 @@
-library(tidyr)
-library(dplyr)
-library(purrr)
-library(rlang)
-
 #' conjugate_encoder
 #'
 #' This function encodes categorical variables by fitting a posterior distribution per each category

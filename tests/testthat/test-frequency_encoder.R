@@ -1,7 +1,5 @@
 test_that("frequency_encoder() replaces categories with no encodings with 0", {
 
-  library(readr)
-
   testing_data <- readr::read_csv("../../data/testing_data.csv")
   train <- testing_data %>%
     dplyr::filter(train_test_3 == 'train')
