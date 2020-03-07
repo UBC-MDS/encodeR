@@ -10,7 +10,7 @@ library(rlang)
 #' per each category are used as the encodings.
 #'
 #' @param X_train A tibble representing the training data set containing some categorical features/columns.
-#' @param X_test An optional tibble representing the test set, containing some set of categorical features/columns. Default = NA.
+#' @param X_test An optional tibble representing the test set, containing some set of categorical features/columns. Default = NULL.
 #' @param y A numeric vector or character vector representing the target variable. If the objective is "binary", then the vector
 #'  should only contain two unique values.
 #' @param cat_columns A character vector containing the names of the categorical columns in the tibble
