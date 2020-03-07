@@ -23,6 +23,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
+
 Imports: 
     dplyr,
     readr,
@@ -30,3 +31,7 @@ Imports:
     tidyr,
     purrr,
     testthat
+=======
+Suggests: 
+    testthat (>= 2.1.0)
+
