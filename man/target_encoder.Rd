@@ -4,13 +4,13 @@
 \alias{target_encoder}
 \title{target_encoder}
 \usage{
+
 target_encoder(
   X_train,
   X_test = NULL,
   y,
   cat_columns,
   prior = 0.5,
-  objective = "regression"
 )
 }
 \arguments{
