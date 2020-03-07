@@ -1,11 +1,24 @@
-test_that("frequency_encoder() replaces categories with no encodings with 0", {
+test_that("frequency_encoder() does not replace categories with no encodings with 0", {
   
   testing_data <- readr::read_csv("../../data/testing_data.csv")
   train <- testing_data %>%
     dplyr::filter(train_test_3 == 'train')
-  test_missing_groups <- testing_data %>%
+  test <- testing_data %>%
     dplyr::filter(train_test_3 == 'test')
-  result <- frequency_encoder(train,test_missing_groups,c("feature_cat_chr"))
-  test_missing_groups_processed <- result$test
-  expect_identical(anyNA(test_missing_groups_processed),FALSE)
+  result <- frequency_encoder(train,test,c("feature_cat_chr"))
+  test <- result$test
+  expect_equal(anyNA(test),FALSE)
+  
+})
+
+test_that("frequency_encoder() produces the expected encoding", {
+  testing_data <- readr::read_csv("../../data/testing_data.csv")
+  train <- testing_data %>%
+    dplyr::filter(train_test_1 == 'train')
+  test <- testing_data %>%
+    dplyr::filter(train_test_1 == 'test')
+  result <- frequency_encoder(train,test,c("feature_cat_chr"))
+  train <- result$train
+  expect_equal(train$feature_cat_chr[1],0.35)
+  
 })
