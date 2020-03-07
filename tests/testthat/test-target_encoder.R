@@ -1,6 +1,6 @@
 test_that("Function does not throw an error if we input invalid arguments", {
 
-  data <- readr::read_csv("../../data/testing_data.csv")
+  data <- readr::read_csv("../testdata/testing_data.csv")
   # check input of objective
   expect_error(target_encoder(
     X_train = data,

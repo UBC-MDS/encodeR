@@ -1,6 +1,6 @@
 test_that("Function does not throw an error if we input invalid arguments", {
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   # These tests check for errors raised when given invalid/improper inputs.
 
@@ -71,7 +71,7 @@ test_that("Function does not run if we pass factors or characters as our target 
 
   # Test for different y types.
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
   expect_type(conjugate_encoder(
@@ -99,7 +99,7 @@ test_that("Function does not run if we do not pass a test set.", {
 
   # Test for the NULL X_test case.
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
   expect_type(conjugate_encoder(
@@ -122,7 +122,7 @@ test_that("Function for regression does not return correct output", {
 
   # Test for the correct output.
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   train1 <- test_data %>%
     dplyr::filter(train_test_1 == "train")
@@ -188,7 +188,7 @@ test_that("Function for binary classification does not return correct output", {
 
   # Test for the correct output.
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   train1 <- test_data %>%
     dplyr::filter(train_test_1 == "train")
