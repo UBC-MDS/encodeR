@@ -126,7 +126,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
 
       # Providing X_test isn't NA, encode the test set.
 
-      if (!is.na(X_test)) {
+      if (!is.null(X_test)) {
 
       # Set the first element of the list containing all of the learned encodings from the training set to the test set now.
       # This is again to recursively call left_join on each item so bind each pair of encodings for each categorical column back
