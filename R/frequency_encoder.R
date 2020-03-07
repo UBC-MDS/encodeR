@@ -1,7 +1,7 @@
 
 get_encoding <-  function(data, col){
   out <- data %>%
-    dplyr::group_by(!!sym(col))%>%
+    dplyr::group_by(!!rlang::sym(col))%>%
     dplyr::summarise(freq = n()/nrow(data))
 }
 
@@ -51,4 +51,3 @@ frequency_encoder <- function(X_train, X_test = NULL, cat_columns) {
     out <- list( "train" = X_train)
   }
 }
-
