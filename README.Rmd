@@ -103,8 +103,8 @@ encodings <- target_encoder(
   objective = "regression" 
 )
 
-encodings[[1]]
-encodings[[2]]
+encodings$train
+encodings$test
 
 ```
 
