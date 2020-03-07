@@ -69,6 +69,10 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
       beta <- prior_params$beta
       n <- nrow(X_train)
 
+      if (n == 1) {
+        stop("Cannot encode values when we only have one sample for regression tasks.")
+      }
+
       for (i in seq_along(cat_columns)) {
 
         column <- cat_columns[i]
@@ -88,16 +92,9 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
         # Calculates the posterior parameters of the distribution, given the observed conditional means and conditional variances.
         # These are just closed form formulas.
 
-        mu_post <- vega * mu + n * conditionals$conditional_mean / (vega + n)
+        mu_post <- (vega * mu + n * conditionals$conditional_mean) / (vega + n)
         alpha_post <- alpha + n / 2
         beta_post <- beta + 0.5 * n * conditionals$conditional_variances + (n * vega) / (vega + n) * ((conditionals$conditional_mean - mu)^2 / 2)
-
-        # IF alpha is less than or equal to 1, the expected value of the variance is not defined. So, force the user to input
-        # a sensical value to prevent division by 0 or an invalid posterior parameter (this is unlikely for most datasets)
-
-        if (alpha_post <= 1) {
-          stop("Invalid posterior prior for alpha. Increase the prior on alpha to avoid this error.")
-        }
 
         # Calculate the encodings which are just the marginal means of each random variable of the posterior.
         # The posterior distribution is two dimensional (X, Y) and so we will get 2 columns of encodings.
@@ -163,7 +160,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
       }
 
       if (setequal(c("alpha", "beta"), names(prior_params)) == FALSE) {
-        stop("Missing a required prior parameter.")
+        stop("Missing a required prior parameter, or invalid parameters specified.")
       }
 
       if (prior_params$alpha <= 0 | prior_params$beta <= 0) {
@@ -175,9 +172,10 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
 
         all_unique_values <- unique(y)
         target_new <- case_when(y == all_unique_values[1] ~ 0,
-                                y == all_unique_values[2] ~ 1,
-                                TRUE ~ y)
+                                y == all_unique_values[2] ~ 1)
 
+      } else {
+        target_new <- y
       }
 
       # Grab needed parameters, untialize the list that will store the encodings.
@@ -195,7 +193,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
         # Same thing as in the regression case, but the posterior here is less complicated (it's one dimension here, not two as above).
         # So we just need the total number of "1"'s.
         conditionals <- X_train %>%
-          bind_cols(target = y) %>%
+          bind_cols(target = target_new) %>%
           group_by(!!sym(column)) %>%
           summarize(conditional_success = sum(target))
 

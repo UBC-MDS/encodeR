@@ -6,7 +6,7 @@
 \usage{
 conjugate_encoder(
   X_train,
-  X_test,
+  X_test = NULL,
   y,
   cat_columns,
   prior_params,
@@ -16,7 +16,7 @@ conjugate_encoder(
 \arguments{
 \item{X_train}{A tibble representing the training data set containing some categorical features/columns.}
 
-\item{X_test}{A tibble representing the test set, containing some set of categorical features/columns.}
+\item{X_test}{An optional tibble representing the test set, containing some set of categorical features/columns. Default = NULL.}
 
 \item{y}{A numeric vector or character vector representing the target variable. If the objective is "binary", then the vector
 should only contain two unique values.}
