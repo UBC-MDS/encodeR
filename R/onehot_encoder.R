@@ -12,9 +12,8 @@
 #' @export
 #'
 #' @examples onehot_encoder(
-#' my_train,
-#' my_test,
-#' cat_columns = c("foo"))
+#' X_train = mtcars,
+#' cat_columns = c("gear", "carb"))
 onehot_encoder <- function(X_train, X_test, cat_columns) {
 
   out <- list(train_processed, test_processed)
