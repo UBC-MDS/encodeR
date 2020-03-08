@@ -1,5 +1,5 @@
 test_that("frequency_encoder() does not replace categories with no encodings with 0", {
-  
+
   testing_data <- readr::read_csv("../testdata/testing_data.csv")
   train <- testing_data %>%
     dplyr::filter(train_test_3 == 'train')
@@ -8,7 +8,7 @@ test_that("frequency_encoder() does not replace categories with no encodings wit
   result <- frequency_encoder(train,test,c("feature_cat_chr"))
   test <- result$test
   expect_equal(anyNA(test),FALSE)
-  
+
 })
 
 test_that("frequency_encoder() does not produce the expected encoding", {
@@ -20,7 +20,7 @@ test_that("frequency_encoder() does not produce the expected encoding", {
   result <- frequency_encoder(train,test,c("feature_cat_chr"))
   train <- result$train
   expect_equal(train$feature_cat_chr[1],0.35)
-  
+
 })
 
 test_that("frequency_encoder() does not produce a list with correct dimensions", {

@@ -1,8 +1,3 @@
-library(tidyr)
-library(dplyr)
-library(purrr)
-library(rlang)
-
 #' conjugate_encoder
 #'
 #' This function encodes categorical variables by fitting a posterior distribution per each category
@@ -101,7 +96,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
 
         posterior_expected_var <- beta_post / (alpha_post - 1)
         all_encodings <- conditionals %>%
-          dplyr::bind_cols(., tibble(encoding_mu = mu_post, encoding_sigma = posterior_expected_var)) %>%
+          dplyr::bind_cols(., tidyr::tibble(encoding_mu = mu_post, encoding_sigma = posterior_expected_var)) %>%
           dplyr::select(-conditional_mean, -conditional_variances)
 
         # Changing the names of the learned encodings here so I can reference them later when joining.
@@ -118,8 +113,8 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
 
       # Join all of the learned encodings for each feature back to the original training set. Then, drop the original categorical
       # columns.
-      train_processed <- reduce(encodings_list, function(x, y) left_join(x, y, by = NULL)) %>%
-        select(-all_of(cat_columns))
+      train_processed <- purrr::reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
+        dplyr::select(-all_of(cat_columns))
 
       # Providing X_test isn't NA, encode the test set.
 
@@ -132,14 +127,14 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
 
       # This is the recursive call to left_join. It's the same thing as a loop where the result of each left_join in the "loop"
       # is carried forwards.
-      test_encodings_means <- reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
+      test_encodings_means <- purrr::reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
         dplyr::select(contains("encoded_mean"))
 
       # If there are test categories that we didn't see in our training set, our best guess is the prior marginal mean of the 1st random variable.
       test_encodings_means[is.na(test_encodings_means)] <- mu
 
       # Same thing as above, but for the 2nd random variable of the posterior distribution.
-      test_encodings_var <- reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
+      test_encodings_var <- purrr::reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
         dplyr::select(contains("encoded_var"))
 
       # Again, set categories that are in test set but not in training to be the prior marginal mean of the 2nd random variable.
@@ -204,7 +199,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
         # Get the encodings, which is the mean of a beta distribution.
         posterior_expected_val <- alpha_post / (alpha_post + beta_post)
         all_encodings <- conditionals %>%
-          dplyr::bind_cols(., tibble(encoded = posterior_expected_val)) %>%
+          dplyr::bind_cols(., tidyr::tibble(encoded = posterior_expected_val)) %>%
           dplyr::select(-conditional_success)
 
         names(all_encodings)[2] <- paste(column, "encoded", sep = "_")
@@ -215,7 +210,7 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
 
       # Recursive joining to the train set.
 
-      train_processed <- reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
+      train_processed <- purrr::reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
         dplyr::select(-all_of(cat_columns))
 
       if (!is.null(X_test)) {
@@ -223,13 +218,13 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_para
       encodings_list[[1]] <- X_test
 
       # Recursive joining on the test set, if it exists.
-      test_encodings <- reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
+      test_encodings <- purrr::reduce(encodings_list, function(x, y) dplyr::left_join(x, y, by = NULL)) %>%
         dplyr::select(contains("encoded"))
 
       # If there exists a category that we didn't see in our training set, use the prior mean.
       test_encodings[is.na(test_encodings)] <- alpha / (alpha + beta)
 
-      test_processed <- bind_cols(X_test, test_encodings) %>%
+      test_processed <- dplyr::bind_cols(X_test, test_encodings) %>%
         dplyr::select(-all_of(cat_columns))
 
       }

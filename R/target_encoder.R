@@ -1,8 +1,3 @@
-library(tidyr)
-library(dplyr)
-library(purrr)
-library(rlang)
-library(readr)
 #' target_encoder
 #'
 #' This function encodes categorical variables with average target values for each category.
@@ -97,7 +92,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
       train_processed[column] <- train_processed['encodings']
       train_processed <- train_processed %>% dplyr::select(-encodings)
       }
-    out <- train_processed
+    out <- list("train" = train_processed)
 
     } else {
 
@@ -134,7 +129,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
         test_processed <- test_processed %>% dplyr::select(-encodings)
         test_processed[[column]][is.na(test_processed[[column]])] <- global_mean
         }
-    out <- list(train_processed, test_processed)
+    out <- list("train" = train_processed, "test" = test_processed)
       }
   out
 }

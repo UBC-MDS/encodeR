@@ -1,8 +1,6 @@
 test_that("Function does not throw an error if we input invalid arguments", {
 
-  library(readr)
-
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   # These tests check for errors raised when given invalid/improper inputs.
 
@@ -73,9 +71,7 @@ test_that("Function does not run if we pass factors or characters as our target 
 
   # Test for different y types.
 
-  library(readr)
-
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
   expect_type(conjugate_encoder(
@@ -103,9 +99,7 @@ test_that("Function does not run if we do not pass a test set.", {
 
   # Test for the NULL X_test case.
 
-  library(readr)
-
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   # IF we pass a factor, does the function still work?
   expect_type(conjugate_encoder(
@@ -126,23 +120,19 @@ test_that("Function does not run if we do not pass a test set.", {
 
 test_that("Function for regression does not return correct output", {
 
-  library(readr)
-  library(dplyr)
-  library(tidyr)
-
   # Test for the correct output.
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   train1 <- test_data %>%
-    filter(train_test_1 == "train")
+    dplyr::filter(train_test_1 == "train")
   test1 <- test_data %>%
-    filter(train_test_1 == "test")
+    dplyr::filter(train_test_1 == "test")
 
   train2 <- test_data %>%
-    filter(train_test_3 == "train")
+    dplyr::filter(train_test_3 == "train")
   test2 <- test_data %>%
-    filter(train_test_3 == "test")
+    dplyr::filter(train_test_3 == "test")
 
   # Known true values for train_test_1. Train_test_1 is a standard dataset.
   train_true_mean_1 <- c(rep(0.773327, 7), rep(0.627191, 6), rep(-0.719982, 7))
@@ -196,23 +186,19 @@ test_that("Function for regression does not return correct output", {
 
 test_that("Function for binary classification does not return correct output", {
 
-  library(readr)
-  library(dplyr)
-  library(tidyr)
-
   # Test for the correct output.
 
-  test_data <- readr::read_csv("../../data/testing_data.csv")
+  test_data <- readr::read_csv("../testdata/testing_data.csv")
 
   train1 <- test_data %>%
-    filter(train_test_1 == "train")
+    dplyr::filter(train_test_1 == "train")
   test1 <- test_data %>%
-    filter(train_test_1 == "test")
+    dplyr::filter(train_test_1 == "test")
 
   train2 <- test_data %>%
-    filter(train_test_3 == "train")
+    dplyr::filter(train_test_3 == "train")
   test2 <- test_data %>%
-    filter(train_test_3 == "test")
+    dplyr::filter(train_test_3 == "test")
 
   # Known true values for train_test_1. Train_test_1 is a standard dataset.
   train_true_mean_1 <- rep(0.285714, 20)
