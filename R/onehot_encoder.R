@@ -14,8 +14,17 @@
 #' @examples onehot_encoder(
 #' X_train = mtcars,
 #' cat_columns = c("gear", "carb"))
-onehot_encoder <- function(X_train, X_test, cat_columns) {
-
-  out <- list(train_processed, test_processed)
-
+#' 
+onehot_encoder <- function(X_train, X_test = NULL, cat_columns) {
+  X_test_included <- !is.null(X_test)
+  if (X_test_included) {
+    dmy <- caret::dummyVars(" ~ .", data = X_train)
+    X_train <- data.frame(predict(dmy, newdata = X_train))
+    X_test <- data.frame(predict(dmy, newdata = X_test))
+    out <- list( "train" = X_train, "test" = X_test)
+  } else {
+    dmy <- caret::dummyVars(" ~ .", data = X_train)
+    X_train <- data.frame(predict(dmy, newdata = X_train))
+    out <- list( "train" = X_train)
+  }
 }
