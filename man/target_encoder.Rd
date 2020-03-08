@@ -41,10 +41,9 @@ This function encodes categorical variables with average target values for each 
 }
 \examples{
 target_encoder(
-my_train,
-my_test,
-my_train$y,
-cat_columns = c("foo"),
+X_train = mtcars,
+y = my_train$y,
+cat_columns = c("gear", "carb"),
 prior = 0.5,
 objective = "regression")
 }

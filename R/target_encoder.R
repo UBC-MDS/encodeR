@@ -20,10 +20,9 @@
 #' @export
 #'
 #' @examples target_encoder(
-#' my_train,
-#' my_test,
-#' my_train$y,
-#' cat_columns = c("foo"),
+#' X_train = mtcars,
+#' y = my_train$y,
+#' cat_columns = c("gear", "carb"),
 #' prior = 0.5,
 #' objective = "regression")
 
@@ -65,7 +64,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
     }
     # encode target variable to 1 and 0
     if (!is_double(y)) {
-      y_new <- case_when(y == unique(y)[1] ~ 0,
+      y_new <- dplyr::case_when(y == unique(y)[1] ~ 0,
                      y == unique(y)[2] ~ 1)
     }
 
@@ -80,15 +79,15 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
       column <- cat_columns[i]
       # calculate target counts for each category and save to dictionary
       search_table <- train_processed %>%
-        bind_cols(target = y_new) %>%
-        group_by(!!sym(column)) %>%
-        summarize(the_sum = sum(target, na.rm = TRUE),
-                  the_count = n())
+        dplyr::bind_cols(target = y_new) %>%
+        group_by(!!rlang::sym(column)) %>%
+        dplyr::summarize(the_sum = sum(target, na.rm = TRUE),
+                        the_count = n())
 
       search_table['encodings'] <- (search_table['the_sum'] + prior * global_mean) / (search_table['the_count'] + prior)
       search_table = search_table %>% dplyr::select( -c(the_sum,the_count))
       # # encode categorical columns for training dataset
-      train_processed <- left_join(train_processed, search_table, by = column)
+      train_processed <- dplyr::left_join(train_processed, search_table, by = column)
       train_processed[column] <- train_processed['encodings']
       train_processed <- train_processed %>% dplyr::select(-encodings)
       }
@@ -112,15 +111,15 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
         column <- cat_columns[i]
         # calculate target counts for each category and save to dictionary
         search_table <- train_processed %>%
-          bind_cols(target = y_new) %>%
-          group_by(!!sym(column)) %>%
-          summarize(the_sum = sum(target, na.rm = TRUE),
-                    the_count = n())
+          dplyr::bind_cols(target = y_new) %>%
+          dplyr::group_by(!!rlang::sym(column)) %>%
+          dplyr::summarize(the_sum = sum(target, na.rm = TRUE),
+                    the_count = dplyr::n())
 
         search_table['encodings'] <- (search_table['the_sum'] + prior * global_mean) / (search_table['the_count'] + prior)
         search_table = search_table %>% dplyr::select( -c(the_sum,the_count))
         # encode categorical columns for training dataset
-        train_processed <- left_join(train_processed, search_table, by = column)
+        train_processed <- dplyr::left_join(train_processed, search_table, by = column)
         train_processed[column] <- train_processed['encodings']
         train_processed <- train_processed %>% dplyr::select(-encodings)
         # encode categorical columns for testing dataset

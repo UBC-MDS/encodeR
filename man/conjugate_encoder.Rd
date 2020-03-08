@@ -44,10 +44,9 @@ per each category are used as the encodings.
 }
 \examples{
 conjugate_encoder(
-my_train,
-my_test,
-my_train$y,
-cat_columns = c("foo"),
-prior_params = list(alpha = 3, beta = 3),
+X_train = mtcars,
+y = mtcars$mpg,
+cat_columns = c("gear", "carb"),
+prior_params = list(mu = 3, vega = 5, alpha = 3, beta = 3),
 objective = "regression")
 }

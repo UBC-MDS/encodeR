@@ -2,7 +2,7 @@
 get_encoding <-  function(data, col){
   out <- data %>%
     dplyr::group_by(!!rlang::sym(col))%>%
-    dplyr::summarise(freq = n()/nrow(data))
+    dplyr::summarise(freq = dplyr::n()/nrow(data))
 }
 
 encode <- function(data,encoding_col,col){
@@ -30,9 +30,8 @@ encode <- function(data,encoding_col,col){
 #' @export
 #'
 #' @examples frequency_encoder(
-#' my_train,
-#' my_test,
-#' cat_columns = c("foo"))
+#' X_train = mtcars,
+#' cat_columns = c("gear", "carb"))
 frequency_encoder <- function(X_train, X_test = NULL, cat_columns) {
   encodings = list()
   X_test_included <- !is.null(X_test)

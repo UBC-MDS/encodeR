@@ -23,7 +23,6 @@ This function encodes categorical variables using the popular onehot method for 
 }
 \examples{
 onehot_encoder(
-my_train,
-my_test,
-cat_columns = c("foo"))
+X_train = mtcars,
+cat_columns = c("gear", "carb"))
 }
