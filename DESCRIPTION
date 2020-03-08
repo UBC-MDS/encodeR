@@ -29,6 +29,7 @@ Imports:
     rlang,
     tidyr,
     purrr,
-    magrittr
+    magrittr,
+    caret
 Suggests: 
     testthat (>= 2.1.0)
