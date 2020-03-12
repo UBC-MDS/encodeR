@@ -51,7 +51,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
   }
 
   #check if target variable is numeric for regression objective
-  if (objective == "regression" & !is_double(y)) {
+  if (objective == "regression" & !is.numeric(y)) {
       stop("Type of target variable must be numeric.")
   }
 
@@ -63,7 +63,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
       stop("The target variable must be binary.")
     }
     # encode target variable to 1 and 0
-    if (!is_double(y)) {
+    if (!is.numeric(y)) {
       y_new <- dplyr::case_when(y == unique(y)[1] ~ 0,
                      y == unique(y)[2] ~ 1)
     }
@@ -80,9 +80,9 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
       # calculate target counts for each category and save to dictionary
       search_table <- train_processed %>%
         dplyr::bind_cols(target = y_new) %>%
-        group_by(!!rlang::sym(column)) %>%
+        dplyr::group_by(!!rlang::sym(column)) %>%
         dplyr::summarize(the_sum = sum(target, na.rm = TRUE),
-                        the_count = n())
+                        the_count = dplyr::n())
 
       search_table['encodings'] <- (search_table['the_sum'] + prior * global_mean) / (search_table['the_count'] + prior)
       search_table = search_table %>% dplyr::select( -c(the_sum,the_count))
@@ -123,7 +123,7 @@ target_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior = 0.5, 
         train_processed[column] <- train_processed['encodings']
         train_processed <- train_processed %>% dplyr::select(-encodings)
         # encode categorical columns for testing dataset
-        test_processed <- left_join(test_processed, search_table, by = column)
+        test_processed <- dplyr::left_join(test_processed, search_table, by = column)
         test_processed[column] <- test_processed['encodings']
         test_processed <- test_processed %>% dplyr::select(-encodings)
         test_processed[[column]][is.na(test_processed[[column]])] <- global_mean
