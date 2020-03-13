@@ -43,7 +43,7 @@ test_that("frequency_encoder() does not throw an error if we input invalid argum
     X_test = testing_data,
     cat_columns = c("cool4cats")))
   # check type of input X_train
-  expect_error(target_encoder(
+  expect_error(frequency_encoder(
     X_train = c(1,2,3),
     X_test = testing_data,
     cat_columns = c("feature_cat_chr")))
