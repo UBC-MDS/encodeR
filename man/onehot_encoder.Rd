@@ -4,7 +4,7 @@
 \alias{onehot_encoder}
 \title{onehot_encoder}
 \usage{
-onehot_encoder(X_train, X_test, cat_columns)
+onehot_encoder(X_train, X_test = NULL, cat_columns)
 }
 \arguments{
 \item{X_train}{A tibble representing the training data set containing some categorical features/columns.}
@@ -25,4 +25,5 @@ This function encodes categorical variables using the popular onehot method for 
 onehot_encoder(
 X_train = mtcars,
 cat_columns = c("gear", "carb"))
+
 }

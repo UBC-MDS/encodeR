@@ -21,7 +21,7 @@
 #'
 #' @examples target_encoder(
 #' X_train = mtcars,
-#' y = my_train$y,
+#' y = mtcars$mpg,
 #' cat_columns = c("gear", "carb"),
 #' prior = 0.5,
 #' objective = "regression")
