@@ -38,7 +38,7 @@ test_that("frequency_encoder() does not produce a list with correct dimensions",
 test_that("frequency_encoder() does not throw an error if we input invalid arguments", {
   testing_data <- readr::read_csv("../testdata/testing_data.csv")
   # Test for categorical columns not being in X_train
-  expect_error(conjugate_encoder(
+  expect_error(frequency_encoder(
     X_train = testing_data,
     X_test = testing_data,
     cat_columns = c("cool4cats")))
