@@ -16,9 +16,23 @@
 #' cat_columns = c("gear", "carb"))
 #'
 onehot_encoder <- function(X_train, X_test = NULL, cat_columns) {
+
+  # check that cat_columns are present in the columns of X_train
+  if (any(cat_columns %in% colnames(X_train)) == FALSE) {
+    stop("Column does not exist in the training set.")
+  }
+
+  # check type of input X_train
+  if (!is.data.frame(X_train)) {
+    stop("Type of X_train must be a data frame.")
+  }
+
+  # Check if X_test was provided
   X_test_included <- !is.null(X_test)
+
   if (X_test_included) {
 
+    # encode values of X_train and X_test
     X_train_processed <- fastDummies::dummy_cols(
       X_train,
       select_columns = cat_columns,
@@ -33,7 +47,10 @@ onehot_encoder <- function(X_train, X_test = NULL, cat_columns) {
       dplyr::select(-tidyselect::all_of(cat_columns))
 
     out <- list("train" = X_train_processed, "test" = X_test_processed)
+
   } else {
+
+    # encode values of X_train
     X_train_processed <- fastDummies::dummy_cols(
       X_train,
       select_columns = cat_columns,
