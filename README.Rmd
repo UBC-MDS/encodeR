@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R build status](https://github.com/UBC-MDS/encodeR/workflows/R-CMD-check/badge.svg)](https://github.com/UBC-MDS/encodeR/actions)
+[![codecov](https://codecov.io/gh/UBC-MDS/encodeR/branch/master/graph/badge.svg)](https://codecov.io/gh/UBC-MDS/encodeR)
 <!-- badges: end -->
 
   This package seeks to provide a convenient set of functions that allow for the encoding of categorical features in potentially more informative ways when compared to other, more standard methods. The user will feed as input a training and testing dataset with categorical features, and the resulting data frames returned will be preprocessed with a specific encoding of the categorical features. At a high level, this package automates the preprocessing of categorical features in ways that exploit particular correlations between the different categories and the data **without** increasing the dimension of the dataset, like in one hot encoding. Thus, through the more deliberate handling of these categorical features, higher model performance can possibly be achieved.
