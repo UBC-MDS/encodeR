@@ -1,0 +1,148 @@
+---
+title: "An Introduction to encodeR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{encodeR-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The **encodeR** package contains functions that allow for more elegant and informative encodings of [categorical features](https://en.wikipedia.org/wiki/Categorical_variable). This package uses a large variety of R packages that need to be installed. These packages are:
+
+- dplyr
+- readr
+- rlang
+- testthat
+- tidyr
+- purrr
+- magrittr
+
+Currently, this package is not available on CRAN. However, one can install the development version of this package by running:
+
+```r
+devtools::install_github("UBC-MDS/encodeR")
+```
+
+The website for this package can be found [here.](link) 
+
+**encodeR** has four functions that implement different kinds of encodings for categorical features. Many of these functions take advantage of the response/target variable, y, to create more informative representations. Currently, **encodeR** only supports the tasks of binary classification and regression.
+
+In most cases, preprocessing of these features is often done using a relatively simple method such as one hot encoding. While this can achieve satisfactory results, often there are better, more _sparse_ representations of these features. These more accurate and sparse representations often come with the drawback of being tedious to implement, but **encodeR** allows one to easily fit such encodings all with a common interface.
+
+# Target Encoding
+
+One encoding method that has become popular in recent years is that of target encoding. Target encoding essentially uses the average observed response per each category to derive encodings for each category. 
+
+First, load the mtcars dataset.
+
+```{r setup}
+suppressMessages(suppressWarnings(library(encodeR)))
+suppressMessages(suppressWarnings(library(dplyr)))
+
+mtcars_data <- mtcars
+head(mtcars_data)
+```
+
+Suppose the user wishes to encode the `cyl` and the `vs` columns, which have three (4, 6 and 8 cylinders) and two categories (0 or 1) respectively. Assume further that the user wishes to predict the variable `mpg`.
+
+Then, all that is left to do is to call the function ``target_encoder``:
+
+```{r target_encoder}
+
+frame_with_encodings <- target_encoder(
+  X_train = mtcars_data,
+  y = mtcars$mpg,
+  cat_columns = c("cyl", "vs"),
+  prior = 0,
+  objective = "regression"
+)
+
+head(frame_with_encodings$train)
+
+```
+
+The user must specify `X_train`, which is a tibble, a response variable `y` which is a vector, and a character vector containing the names of the categorical columns the user wishes to encode. The user must also set the objective to "regression" here since the response variable is fully continuous.
+
+Observe that both the `cyl` and the `vs` columns have been replaced with fully numeric columns. An important fact to note is that the resulting tibble is that of the original dimension - in fact, there are no additional columns added after the encoding process. This is one reason why target encoding (as well as others) are effective. They do not increase the dimension of the data, which [can often lead to problems.](https://en.wikipedia.org/wiki/Curse_of_dimensionality)
+
+Either way, these new columns correspond to the learned encodings of the various categories. For example, for `cyl`, the encodings are:
+
+```{r cyl}
+
+frame_with_encodings$train %>%
+  select(cyl) %>%
+  bind_cols(cyl_orig = mtcars_data$cyl) %>%
+  distinct()
+
+```
+
+The encodings for each category are fairly intuitive here. Recall that the target variable is `mpg`. Thus, one can easily see that as the number of cylinders increases, the mpg decreases. This relationship is now captured in the encodings.
+
+## The argument X_test
+
+Often, the user splits the entire dataset into two before doing any preprocessing of the features, to prevent overfitting and to ensure an honest assessment of model performance. Preprocessing features before splitting may lead to information being leaked from the test set. 
+
+Encodings are no exception to this rule. For more common methods such as one hot encoding, users typically do not need to worry about information leakage since each row is still treated independently of all others. However, for target encoding and conjugate encoding it is vital that the dataset is split before since these methods average over multiple rows and also involve the response/target variable.
+
+The **encodeR** package has been designed so that the user does not need to worry about any potential data leakage. The encodings are learned strictly on `X_train` and are then joined to `X_test`.
+
+The user can easily do this by supplying an argument to `X_test` to any of the encoding functions as follows:
+
+```{r}
+
+prior_values = list(mu = 0, vega = 5, alpha = 1, beta = 1)
+mtcars_train <- mtcars[1:30, ]
+mtcars_test <- mtcars[31:nrow(mtcars), ]
+
+my_encodings <- conjugate_encoder(
+  X_train = mtcars_train,
+  X_test = mtcars_test,
+  y = mtcars_train$mpg, 
+  cat_columns = c("cyl"),
+  prior_params = prior_values,
+  objective = "regression"
+)
+
+head(my_encodings$train)
+my_encodings$test
+```
+
+Observe that the encoder function now returns a list with two tibbles labelled `train` and `test`. The two tibbles returned contain the preprocessed `X_train` and `X_test` tibbles, respectively.
+
+Note that when using `target_encoder` that if there are categories that do not appear in the training set but do appear in the test set, these categories are encoded with the group mean (see below) $\bar x$ of the target variable. 
+
+## The Prior Parameter
+
+Target encoding is highly susceptible to overfitting since the estimated relationship between the categories in the training set may not necessarily be true in general. 
+
+The `prior` paramter in `target_encoding` allows us to address this issue through the use of Laplace smoothing. The idea of Laplace smoothing is to use a weighted average of the mean of the response variable and the conditional mean per each category. The result is a smoothed estimate that, with a suitable `prior` chosen, is less prone to overfitting. Formally, the learned encoding for the jth category $u_{ij}$ is now:
+
+$$u_{j} = \frac{\sum_{i=1}^{N} y_{ij} + \text{prior} \times \bar x}{N + \text{prior}},$$
+where $\bar x$ is the mean of the response, and $N$ is the total number of observations belogning to category $j$. Thus, a larger `prior` parameter places more weight on the group mean $\bar x$, whereas a lower prior fully trusts the data.
+
+If one repeats the example above but with a prior of 5:
+
+```{r}
+frame_with_encodings <- target_encoder(
+  X_train = mtcars_train,
+  y = mtcars_train$mpg,
+  cat_columns = c("cyl"),
+  prior = 5,
+  objective = "regression"
+)
+
+frame_with_encodings$train %>%
+  select(cyl) %>%
+  bind_cols(cyl_orig = mtcars_train$cyl) %>%
+  distinct()
+
+```
+
+Observe that the encodings for 6 and 8 cylinders have been dragged slightly up, whereas the encodings for 4 cylinders has been dragged down. This is because 6 and 8 cylinder vehicles have lower than average miles per gallon, whereas 4 cylinder vehicles have higher than average miles per gallon.

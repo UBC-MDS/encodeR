@@ -14,17 +14,32 @@
 #' @examples onehot_encoder(
 #' X_train = mtcars,
 #' cat_columns = c("gear", "carb"))
-#' 
+#'
 onehot_encoder <- function(X_train, X_test = NULL, cat_columns) {
   X_test_included <- !is.null(X_test)
   if (X_test_included) {
-    dmy <- caret::dummyVars(" ~ .", data = X_train)
-    X_train <- data.frame(predict(dmy, newdata = X_train))
-    X_test <- data.frame(predict(dmy, newdata = X_test))
-    out <- list( "train" = X_train, "test" = X_test)
+
+    X_train_processed <- fastDummies::dummy_cols(
+      X_train,
+      select_columns = cat_columns,
+      remove_first_dummy = TRUE) %>%
+      dplyr::select(-tidyselect::all_of(cat_columns))
+
+    X_test_processed <- fastDummies::dummy_cols(
+      X_test,
+      select_columns = cat_columns,
+      remove_first_dummy = TRUE
+    ) %>%
+      dplyr::select(-tidyselect::all_of(cat_columns))
+
+    out <- list("train" = X_train_processed, "test" = X_test_processed)
   } else {
-    dmy <- caret::dummyVars(" ~ .", data = X_train)
-    X_train <- data.frame(predict(dmy, newdata = X_train))
-    out <- list( "train" = X_train)
+    X_train_processed <- fastDummies::dummy_cols(
+      X_train,
+      select_columns = cat_columns,
+      remove_first_dummy = TRUE) %>%
+      dplyr::select(-tidyselect::all_of(cat_columns))
+
+    out <- list("train" = X_train_processed)
   }
 }

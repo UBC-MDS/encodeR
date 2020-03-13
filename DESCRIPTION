@@ -30,9 +30,13 @@ Imports:
     tidyr,
     purrr,
     magrittr,
-    caret
+    tidyselect,
+    fastDummies
 Suggests: 
     testthat (>= 2.1.0),
+    knitr,
+    rmarkdown,
     covr
+VignetteBuilder: knitr
 URL: https://github.com/UBC-MDS/encodeR
 BugReports: https://github.com/UBC-MDS/encodeR/issues
