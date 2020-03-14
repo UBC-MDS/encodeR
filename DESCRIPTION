@@ -36,6 +36,8 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown,
+    pkgdown,
+    vignette,
     covr
 VignetteBuilder: knitr
 URL: https://github.com/UBC-MDS/encodeR
