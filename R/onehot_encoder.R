@@ -32,6 +32,24 @@ onehot_encoder <- function(X_train, X_test = NULL, cat_columns) {
     ) %>%
       dplyr::select(-tidyselect::all_of(cat_columns))
 
+    # Find any columns that are misaligned
+
+    missing_cols <-  names(X_train_processed)[which(!names(X_train_processed) %in% names(X_test_processed))]
+
+
+    for (k in 1:length(missing_cols)) {
+
+      missing_col <- missing_cols[k]
+
+      X_test_processed <- X_test_processed %>%
+        mutate(!!missing_col := rep(0, nrow(.)))
+
+    }
+
+    # Reorder the columns to match X_train_processed
+
+    X_test_processed <- X_test_processed[names(X_train_processed)]
+
     out <- list("train" = X_train_processed, "test" = X_test_processed)
   } else {
     X_train_processed <- fastDummies::dummy_cols(

@@ -36,7 +36,7 @@ The website for this package can be found [here.](link)
 
 In most cases, preprocessing of these features is often done using a relatively simple method such as one hot encoding. While this can achieve satisfactory results, often there are better, more _sparse_ representations of these features. These more accurate and sparse representations often come with the drawback of being tedious to implement, but **encodeR** allows one to easily fit such encodings all with a common interface.
 
-# Target Encoding
+## Target Encoding
 
 One encoding method that has become popular in recent years is that of target encoding. Target encoding essentially uses the average observed response per each category to derive encodings for each category. 
 
@@ -85,7 +85,7 @@ frame_with_encodings$train %>%
 
 The encodings for each category are fairly intuitive here. Recall that the target variable is `mpg`. Thus, one can easily see that as the number of cylinders increases, the mpg decreases. This relationship is now captured in the encodings.
 
-## The argument X_test
+### The argument X_test
 
 Often, the user splits the entire dataset into two before doing any preprocessing of the features, to prevent overfitting and to ensure an honest assessment of model performance. Preprocessing features before splitting may lead to information being leaked from the test set. 
 
@@ -93,20 +93,19 @@ Encodings are no exception to this rule. For more common methods such as one hot
 
 The **encodeR** package has been designed so that the user does not need to worry about any potential data leakage. The encodings are learned strictly on `X_train` and are then joined to `X_test`.
 
-The user can easily do this by supplying an argument to `X_test` to any of the encoding functions as follows:
+The user can easily do this by supplying an _optional_ argument to `X_test` to any of the encoding functions like so:
 
 ```{r}
 
-prior_values = list(mu = 0, vega = 5, alpha = 1, beta = 1)
 mtcars_train <- mtcars[1:30, ]
 mtcars_test <- mtcars[31:nrow(mtcars), ]
 
-my_encodings <- conjugate_encoder(
+my_encodings <- target_encoder(
   X_train = mtcars_train,
   X_test = mtcars_test,
   y = mtcars_train$mpg, 
   cat_columns = c("cyl"),
-  prior_params = prior_values,
+  prior = 0.7,
   objective = "regression"
 )
 
@@ -118,7 +117,7 @@ Observe that the encoder function now returns a list with two tibbles labelled `
 
 Note that when using `target_encoder` that if there are categories that do not appear in the training set but do appear in the test set, these categories are encoded with the group mean (see below) $\bar x$ of the target variable. 
 
-## The Prior Parameter
+### The Prior Parameter
 
 Target encoding is highly susceptible to overfitting since the estimated relationship between the categories in the training set may not necessarily be true in general. 
 
@@ -146,3 +145,124 @@ frame_with_encodings$train %>%
 ```
 
 Observe that the encodings for 6 and 8 cylinders have been dragged slightly up, whereas the encodings for 4 cylinders has been dragged down. This is because 6 and 8 cylinder vehicles have lower than average miles per gallon, whereas 4 cylinder vehicles have higher than average miles per gallon.
+
+## Frequency Encoding
+
+Another more recently popular method of encoding (especially in Kaggle competitions) is that of frequency encoding. Frequency encoding derives its encodings by using the observed frequency of each class. The intuition behind such an encoding is that those categories that appear the most should be assigned higher weight than those that do not. 
+
+The usage of the function `frequency_encoder` is straightforward. Note that this function does not require a `y` or `objective` argument, because it does not make use of the response/target when deriving its encodings.
+
+```{r}
+
+encodings_freq <- frequency_encoder(
+  X_train = mtcars_train,
+  cat_columns = c("cyl")
+)
+
+head(encodings_freq$train)
+
+
+```
+
+We see that the `cyl` column has been replaced by the learned frequencies of each category, as expected. 
+
+Note that currently, this function does not implement Laplace smoothing like in `target_encoder`. Thus, observations that do not appear in the train set but do appear in the test are given 0 frequencies.
+
+```{r}
+
+no_8 <- mtcars_train %>%
+  filter(cyl != 8)
+
+encodings_freq <- frequency_encoder(
+  X_train = no_8,
+  X_test = mtcars_test,
+  cat_columns = c("cyl")
+)
+
+encodings_freq$test
+
+
+```
+
+Observe now that for the Maserati Bora, the encoding is 0 since no other cars with 8 cylinders existed in the dataset.
+
+## Conjugate Encoding
+
+This method for encoding categorical features is based on a [very recent paper](https://arxiv.org/pdf/1904.13001.pdf) by Slakey et al. (2019). At a very high level, this paper reworks target encoding in a full Bayesian framework so that each category in a particular column has a posterior distribution using the response as the observed data. The first k moments of the posterior distributions are then used as the encodings.
+
+The paper only discusses the use of this method through [conjugate priors](https://en.wikipedia.org/wiki/Conjugate_prior) for computational reasons, but in theory any arbitrary prior and likelihood can be used.
+
+To use this method, one must specify prior parameters depending on the objective to the argument `prior_params`. In the `objective = "regression"` case, the list must have four named items: mu, vega, alpha, and beta, which correspond to the parameters of a [Normal-Inverse-gamma distribution](https://en.wikipedia.org/wiki/Normal-inverse-gamma_distribution). Vega, alpha, and beta must all be greater than 0. mu can be any real number.
+
+Using the function `conjugate_encoder` is relatively straightforward:
+
+```{r}
+
+prior_values <- list(mu = 0, vega = 3, alpha = 1, beta = 1)
+encodings_conjugate <- conjugate_encoder(
+  X_train = mtcars_train,
+  X_test = mtcars_test,
+  y = mtcars_train$mpg,
+  prior_params = prior_values,
+  cat_columns = c("cyl"),
+  objective = "regression"
+)
+
+encodings_conjugate$train %>%
+  select(cyl_encoded_mean, cyl_encoded_var) %>%
+  bind_cols(cyl = mtcars_train$cyl) %>%
+  distinct()
+
+```
+
+As one can see, the encodings are fairly similar to that of `target_encoder` but with more flexibility via. the explicit modelling of the posterior.
+
+Note that the Normal-Inverse-gamma distribution is bivariate. In other words, we assumed that the likelihood has unknown mean and unknown variance. 
+
+In general, the Normal-Inverse-gamma distribution is parameterized such that the density is a function of two random variables, $f(x, \sigma^2)$. Thus, the second column shown above, `cyl_encoded_var` is the expected value of $sigma^2$.
+
+### Classification Conjugate Encoding
+
+Changing the objective to "binary" in `target_encoder` makes no difference since it just calculates the mean of y, regardless if it is binary or fully continiuous. However, for `conjugate_encoder` this is not true since the likelihood used is specifically chosen to handle binary outcomes (a binomial).
+
+For classification, the user must specify a list with two named arguments for `prior_params`; alpha and beta. These variables correspond to the parameters of a [beta distribution.](https://en.wikipedia.org/wiki/Beta_distribution)
+
+Otherwise, the usage is exactly the same as above:
+
+```{r}
+
+prior_values <- list(alpha = 1, beta = 1)
+encodings_conjugate <- conjugate_encoder(
+  X_train = mtcars_train,
+  X_test = mtcars_test,
+  y = mtcars_train$vs,
+  prior_params = prior_values,
+  cat_columns = c("cyl"),
+  objective = "binary"
+)
+
+encodings_conjugate$train %>%
+  select(cyl_encoded) %>%
+  bind_cols(cyl = mtcars_train$cyl) %>%
+  distinct()
+
+```
+
+Note that in this case, the target variable has changed to the binary variable `vs`. The column `cyl_encoded` is the expected value of the posterior distribution (also a beta).
+
+## One Hot Encoding
+
+**encodeR** would not be complete without including the most popular method for encoding categorical features. This method creates k-1 columns of 0/1 indicator variables, where k is the number of categories. This is a completely uninformative method, but the syntax remains the same for consistency.
+
+```{r}
+
+ohe_encodings <- onehot_encoder(
+  X_train = mtcars_train,
+  X_test = mtcars_test,
+  cat_columns = c("cyl")
+)
+
+head(ohe_encodings$train)
+ohe_encodings$test
+
+```
