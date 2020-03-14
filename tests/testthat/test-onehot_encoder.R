@@ -8,7 +8,7 @@ test_that("onehot_encoder() does not produce a list with correct dimensions", {
   test <- testing_data %>%
     dplyr::filter(train_test_1 == 'test')
 
-  result_test <- onehot_encoder(train, test, cat_columns =c("feature_cat_chr"))
+  result_test <- onehot_encoder(train, test, cat_columns = c("feature_cat_chr"))
   result <- onehot_encoder(train, cat_columns = c("feature_cat_chr"))
 
   expect_equal(length(result_test),2)
