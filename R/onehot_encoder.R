@@ -50,16 +50,16 @@ onehot_encoder <- function(X_train, X_test = NULL, cat_columns) {
 
     missing_cols <-  names(X_train_processed)[which(!names(X_train_processed) %in% names(X_test_processed))]
 
+    if (length(missing_cols) != 0) {
 
     for (k in 1:length(missing_cols)) {
 
       missing_col <- missing_cols[k]
 
-      X_test_processed <- X_test_processed %>%
-        mutate(!!missing_col := rep(0, nrow(.)))
+      X_test_processed[[missing_col]] <- rep(0, nrow(X_test_processed))
 
     }
-
+}
     # Reorder the columns to match X_train_processed
 
     X_test_processed <- X_test_processed[names(X_train_processed)]
