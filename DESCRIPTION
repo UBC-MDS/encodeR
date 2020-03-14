@@ -37,7 +37,6 @@ Suggests:
     knitr,
     rmarkdown,
     pkgdown,
-    vignette,
     covr
 VignetteBuilder: knitr
 URL: https://github.com/UBC-MDS/encodeR
