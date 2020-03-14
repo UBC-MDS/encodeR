@@ -52,10 +52,10 @@ devtools::install_github("UBC-MDS/encodeR")
 ```
 
 ## Dependencies
+- R (>= 3.4)
 - dplyr
 - readr
 - rlang
-- testthat
 - tidyr
 - purrr
 - magrittr
