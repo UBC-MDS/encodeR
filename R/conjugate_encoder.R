@@ -25,7 +25,7 @@
 #' @examples conjugate_encoder(
 #' X_train = mtcars,
 #' y = mtcars$mpg,
-#' cat_columns = c("gear", "carb"),
+#' cat_columns = c("cyl", "vs"),
 #' prior_params = list(mu = 3, vega = 5, alpha = 3, beta = 3),
 #' objective = "regression")
 conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns, prior_params, objective = "regression") {

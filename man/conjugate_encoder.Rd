@@ -46,7 +46,7 @@ per each category are used as the encodings.
 conjugate_encoder(
 X_train = mtcars,
 y = mtcars$mpg,
-cat_columns = c("gear", "carb"),
+cat_columns = c("cyl", "vs"),
 prior_params = list(mu = 3, vega = 5, alpha = 3, beta = 3),
 objective = "regression")
 }

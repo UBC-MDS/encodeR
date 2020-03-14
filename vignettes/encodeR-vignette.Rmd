@@ -19,9 +19,10 @@ The **encodeR** package contains functions that allow for more elegant and infor
 - dplyr
 - readr
 - rlang
-- testthat
 - tidyr
+- fastDummies
 - purrr
+- tidyselect
 - magrittr
 
 Currently, this package is not available on CRAN. However, one can install the development version of this package by running:
@@ -219,7 +220,7 @@ As one can see, the encodings are fairly similar to that of `target_encoder` but
 
 Note that the Normal-Inverse-gamma distribution is bivariate. In other words, we assumed that the likelihood has unknown mean and unknown variance. 
 
-In general, the Normal-Inverse-gamma distribution is parameterized such that the density is a function of two random variables, $f(x, \sigma^2)$. Thus, the second column shown above, `cyl_encoded_var` is the expected value of $sigma^2$.
+In general, the Normal-Inverse-gamma distribution is parameterized such that the density is a function of two random variables, $f(x, \sigma^2)$. Thus, the second column shown above, `cyl_encoded_var` is the expected value of $\sigma^2$.
 
 ### Classification Conjugate Encoding
 
