@@ -22,6 +22,10 @@ particular correlations between the different categories and the data
 encoding. Thus, through the more deliberate handling of these
 categorical features, higher model performance can possibly be achieved.
 
+Please read [this
+vignette](https://ubc-mds.github.io/encodeR/articles/encodeR-vignette.html)
+for a hands on guide on how to use encodeR.
+
 ## Features
 
 This package contains four functions, each that accept two tibbles
@@ -30,15 +34,15 @@ functions will also require additional arguments depending on how the
 encodings are calculated for each category. For now, the package aims to
 support binary classification and regression problems.
 
-1.  One-hot encoder: the standard one-hot encoding of categorical
+1.  `onehot_encoder()`: the standard one-hot encoding of categorical
     features, which will create K-1 columns of 0/1 indicator variables.
-2.  Frequency encoder: calculates encodings based off the observed
+2.  `frequency_encoder()`: calculates encodings based off the observed
     frequency of each category in the training set.
-3.  Target/Label encoder: calculates encodings by computing the average
+3.  `target_encoder()`: calculates encodings by computing the average
     observed response per each category.
-4.  Conjugate encoder: calculates encodings based off Bayes rule using
-    conjugate priors and the mean of the posterior distribution. The
-    original paper for this method can be found
+4.  `conjugate_encoder()`: calculates encodings based off Bayes rule
+    using conjugate priors and the mean of the posterior distribution.
+    The original paper for this method can be found
     [here.](https://arxiv.org/pdf/1904.13001.pdf)
 
 ## Where encodeR Fits in The R Ecosystem
@@ -90,6 +94,7 @@ devtools::install_github("UBC-MDS/encodeR")
   - rlang
   - tidyr
   - purrr
+  - fastDummies
   - magrittr
 
 ## Examples

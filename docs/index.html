@@ -84,15 +84,20 @@
 <!-- badges: start -->
 
 <p>This package seeks to provide a convenient set of functions that allow for the encoding of categorical features in potentially more informative ways when compared to other, more standard methods. The user will feed as input a training and testing dataset with categorical features, and the resulting data frames returned will be preprocessed with a specific encoding of the categorical features. At a high level, this package automates the preprocessing of categorical features in ways that exploit particular correlations between the different categories and the data <strong>without</strong> increasing the dimension of the dataset, like in one hot encoding. Thus, through the more deliberate handling of these categorical features, higher model performance can possibly be achieved.</p>
+<p>Please read <a href="https://ubc-mds.github.io/encodeR/articles/encodeR-vignette.html">this vignette</a> for a hands on guide on how to use encodeR.</p>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
 <p>This package contains four functions, each that accept two tibbles representing the train and test sets. Depending on the method, the functions will also require additional arguments depending on how the encodings are calculated for each category. For now, the package aims to support binary classification and regression problems.</p>
 <ol>
-<li>One-hot encoder: the standard one-hot encoding of categorical features, which will create K-1 columns of 0/1 indicator variables.</li>
-<li>Frequency encoder: calculates encodings based off the observed frequency of each category in the training set.</li>
-<li>Target/Label encoder: calculates encodings by computing the average observed response per each category.</li>
-<li>Conjugate encoder: calculates encodings based off Bayes rule using conjugate priors and the mean of the posterior distribution. The original paper for this method can be found <a href="https://arxiv.org/pdf/1904.13001.pdf">here.</a>
+<li>
+<code><a href="reference/onehot_encoder.html">onehot_encoder()</a></code>: the standard one-hot encoding of categorical features, which will create K-1 columns of 0/1 indicator variables.</li>
+<li>
+<code><a href="reference/frequency_encoder.html">frequency_encoder()</a></code>: calculates encodings based off the observed frequency of each category in the training set.</li>
+<li>
+<code><a href="reference/target_encoder.html">target_encoder()</a></code>: calculates encodings by computing the average observed response per each category.</li>
+<li>
+<code><a href="reference/conjugate_encoder.html">conjugate_encoder()</a></code>: calculates encodings based off Bayes rule using conjugate priors and the mean of the posterior distribution. The original paper for this method can be found <a href="https://arxiv.org/pdf/1904.13001.pdf">here.</a>
 </li>
 </ol>
 </div>
@@ -117,12 +122,13 @@
 <h2 class="hasAnchor">
 <a href="#dependencies" class="anchor"></a>Dependencies</h2>
 <ul>
+<li>R (&gt;= 3.4)</li>
 <li>dplyr</li>
 <li>readr</li>
 <li>rlang</li>
-<li>testthat</li>
 <li>tidyr</li>
 <li>purrr</li>
+<li>fastDummies</li>
 <li>magrittr</li>
 </ul>
 </div>
@@ -132,12 +138,12 @@
 <p>This package can allow one to fit many different kinds of encodings for categorical features easily. For example, one can fit a conjugate encoding of some categorical variables by:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(encodeR)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; ✓ ggplot2 3.3.0     ✓ purrr   0.3.3</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ✓ tibble  2.1.3     ✓ dplyr   0.8.5</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; ✓ tidyr   1.0.2     ✓ stringr 1.4.0</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; ✓ readr   1.3.1     ✓ forcats 0.4.0</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span></a>
 <a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; x dplyr::filter() masks stats::filter()</span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span></a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"></a>
@@ -240,7 +246,10 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Robert Pimentel <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Brayden Tang <br><small class="roles"> Author </small>  </li>
+<li>Shiying Wang <br><small class="roles"> Author </small>  </li>
+<li>Bronwyn Baillie <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Robert Pimentel <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -256,7 +265,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert Pimentel.</p>
+  <p>Developed by Brayden Tang, Shiying Wang, Bronwyn Baillie, Robert Pimentel.</p>
 </div>
 
 <div class="pkgdown">
