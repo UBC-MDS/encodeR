@@ -1,4 +1,5 @@
-test_that("frequency_encoder() does not replace categories with no encodings with 0", {
+test_that("frequency_encoder() does not replace categories with no
+          encodings with 0", {
 
   testing_data <- readr::read_csv("../testdata/testing_data.csv")
 
@@ -31,7 +32,8 @@ test_that("frequency_encoder() does not produce the expected encoding", {
 
 })
 
-test_that("frequency_encoder() does not produce a list with correct dimensions", {
+test_that("frequency_encoder() does not produce a list with correct
+          dimensions", {
 
   testing_data <- readr::read_csv("../testdata/testing_data.csv")
 
@@ -41,7 +43,11 @@ test_that("frequency_encoder() does not produce a list with correct dimensions",
   test <- testing_data %>%
     dplyr::filter(train_test_1 == 'test')
 
-  result_test <- frequency_encoder(train, test, cat_columns =c("feature_cat_chr"))
+  result_test <- frequency_encoder(
+    train,
+    test,
+    cat_columns =c("feature_cat_chr")
+    )
   result <- frequency_encoder(train, cat_columns = c("feature_cat_chr"))
 
   expect_equal(length(result_test),2)
@@ -49,7 +55,8 @@ test_that("frequency_encoder() does not produce a list with correct dimensions",
   expect_equal(length(result),1)
 })
 
-test_that("frequency_encoder() does not throw an error if we input invalid arguments", {
+test_that("frequency_encoder() does not throw an error if we input
+          invalid arguments", {
 
   testing_data <- readr::read_csv("../testdata/testing_data.csv")
 

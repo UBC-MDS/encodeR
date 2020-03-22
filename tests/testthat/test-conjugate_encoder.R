@@ -65,9 +65,27 @@ test_that("Function does not throw an error if we input invalid arguments", {
     prior_params = list(beta = 5, alpha = 100),
     objective = "binary"))
 
+  # Test for non-numeric y, but regression specified
+  expect_error(conjugate_encoder(
+    X_train = test_data,
+    X_test = test_data,
+    y = as.character(test_data$target_bin),
+    cat_columns = c("feature_cat_chr"),
+    prior_params = list(mu = 1, vega = 2, alpha = 3, beta = 2),
+    objective = "regression"))
+
+  # Test that warning is raised if conditional variance fit is NA
+  expect_warning(conjugate_encoder(
+    X_train = test_data[1, ],
+    y = test_data$target_cont[1],
+    cat_columns = c("feature_cat_chr"),
+    prior_params = list(mu = 1, vega = 2, alpha = 3, beta = 2),
+    objective = "regression"))
+
 })
 
-test_that("Function does not run if we pass factors or characters as our target variable.", {
+test_that("Function does not run if we pass factors or characters as our
+          target variable.", {
 
   # Test for different y types.
 
@@ -141,7 +159,8 @@ test_that("Function for regression does not return correct output", {
   test_true_mean_1 <- c(rep(0.77327, 3), rep(0.627191, 4), rep(-0.719982, 3))
   test_true_var_1 <- c(rep(1.46942, 3), rep(0.427613, 4), rep(2.57358, 3))
 
-  # Known true values for train_test_2. This dataset has test categories that do not appear in the training set.
+  # Known true values for train_test_2. This dataset has test categories that
+  # do not appear in the training set.
   train_true_mean_2 <- c(rep(0.392902, 10), rep(-0.401635, 10))
   train_true_var_2 <- c(rep(1.71888, 10), rep(2.1842, 10))
 
@@ -170,21 +189,54 @@ test_that("Function for regression does not return correct output", {
 
   # Test against the known encodings for test set 1.
 
-  expect_equal(encodings_set_1$train$feature_cat_chr_encoded_mean, train_true_mean_1, tolerance = 0.01)
-  expect_equal(encodings_set_1$train$feature_cat_chr_encoded_var, train_true_var_1, tolerance = 0.01)
-  expect_equal(encodings_set_1$test$feature_cat_chr_encoded_mean, test_true_mean_1, tolerance = 0.01)
-  expect_equal(encodings_set_1$test$feature_cat_chr_encoded_var, test_true_var_1, tolerance = 0.01)
+  expect_equal(
+    encodings_set_1$train$feature_cat_chr_encoded_mean,
+    train_true_mean_1,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_1$train$feature_cat_chr_encoded_var,
+    train_true_var_1,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_1$test$feature_cat_chr_encoded_mean,
+    test_true_mean_1,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_1$test$feature_cat_chr_encoded_var,
+    test_true_var_1,
+    tolerance = 0.01
+    )
 
   # Test against the known encodings for test set 2.
 
-  expect_equal(encodings_set_2$train$feature_cat_chr_encoded_mean, train_true_mean_2, tolerance = 0.01)
-  expect_equal(encodings_set_2$train$feature_cat_chr_encoded_var, train_true_var_2, tolerance = 0.01)
-  expect_equal(encodings_set_2$test$feature_cat_chr_encoded_mean, test_true_mean_2, tolerance = 0.01)
-  expect_equal(encodings_set_2$test$feature_cat_chr_encoded_var, test_true_var_2, tolerance = 0.01)
+  expect_equal(
+    encodings_set_2$train$feature_cat_chr_encoded_mean,
+    train_true_mean_2,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_2$train$feature_cat_chr_encoded_var,
+    train_true_var_2,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_2$test$feature_cat_chr_encoded_mean,
+    test_true_mean_2,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_2$test$feature_cat_chr_encoded_var,
+    test_true_var_2,
+    tolerance = 0.01
+    )
 
 })
 
-test_that("Function for binary classification does not return correct output", {
+test_that("Function for binary classification does not return
+          correct output", {
 
   # Test for the correct output.
 
@@ -204,7 +256,8 @@ test_that("Function for binary classification does not return correct output", {
   train_true_mean_1 <- rep(0.285714, 20)
   test_true_mean_1 <- rep(0.285714, 10)
 
-  # Known true values for train_test_2. This dataset has test categories that do not appear in the training set.
+  # Known true values for train_test_2. This dataset has test categories that
+  # do not appear in the training set.
   train_true_mean_2 <- rep(0.357143, 20)
   test_true_mean_2 <- rep(0.625, 10)
 
@@ -230,12 +283,28 @@ test_that("Function for binary classification does not return correct output", {
 
   # Test against the known encodings for test set 1.
 
-  expect_equal(encodings_set_1$train$feature_cat_chr_encoded, train_true_mean_1, tolerance = 0.01)
-  expect_equal(encodings_set_1$test$feature_cat_chr_encoded, test_true_mean_1, tolerance = 0.01)
+  expect_equal(
+    encodings_set_1$train$feature_cat_chr_encoded,
+    train_true_mean_1,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_1$test$feature_cat_chr_encoded,
+    test_true_mean_1,
+    tolerance = 0.01
+    )
 
   # Test against the known encodings for test set 2.
 
-  expect_equal(encodings_set_2$train$feature_cat_chr_encoded, train_true_mean_2, tolerance = 0.01)
-  expect_equal(encodings_set_2$test$feature_cat_chr_encoded, test_true_mean_2, tolerance = 0.01)
+  expect_equal(
+    encodings_set_2$train$feature_cat_chr_encoded,
+    train_true_mean_2,
+    tolerance = 0.01
+    )
+  expect_equal(
+    encodings_set_2$test$feature_cat_chr_encoded,
+    test_true_mean_2,
+    tolerance = 0.01
+    )
 
 })

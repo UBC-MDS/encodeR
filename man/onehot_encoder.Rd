@@ -7,19 +7,22 @@
 onehot_encoder(X_train, X_test = NULL, cat_columns)
 }
 \arguments{
-\item{X_train}{A tibble representing the training data set containing some categorical features/columns.}
+\item{X_train}{X_train A `tibble` or `data.frame` representing the
+training data set containing some categorical features/columns.}
 
-\item{X_test}{A tibble representing the test set, containing some set of categorical features/columns.}
+\item{X_test}{X_test A `tibble` or `data.frame` representing the test set,
+containing some set of categorical features/columns. Default = NULL.}
 
-\item{cat_columns}{A character vector containing the names of the categorical columns in the tibble or
-data frame that should be encoded.}
+\item{cat_columns}{A character vector containing the names of the
+categorical columns in the tibble that should be encoded.}
 }
 \value{
-A list with processed training and test sets, in which the named categorical
-columns are replaced with their encodings.
+A list with processed training and test sets, in which the named
+categorical columns are replaced with their encodings.
 }
 \description{
-This function encodes categorical variables using the popular onehot method for each category.
+This function encodes categorical variables using the popular onehot method
+for each category.
 }
 \examples{
 onehot_encoder(

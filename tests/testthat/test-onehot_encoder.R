@@ -16,7 +16,8 @@ test_that("onehot_encoder() does not produce a list with correct dimensions", {
   expect_equal(length(result),1)
 })
 
-test_that("onehot_encoder() does not throw an error if we input invalid arguments", {
+test_that("onehot_encoder() does not throw an error if we input invalid
+          arguments", {
 
   testing_data <- readr::read_csv("../testdata/testing_data.csv")
 
