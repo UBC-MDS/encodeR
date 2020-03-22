@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">encodeR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@
 <h3 class="hasAnchor">
 <a href="#the-prior-parameter" class="anchor"></a>The Prior Parameter</h3>
 <p>Target encoding is highly susceptible to overfitting since the estimated relationship between the categories in the training set may not necessarily be true in general.</p>
-<p>The <code>prior</code> paramter in <code>target_encoding</code> allows us to address this issue through the use of Laplace smoothing. The idea of Laplace smoothing is to use a weighted average of the mean of the response variable and the conditional mean per each category. The result is a smoothed estimate that, with a suitable <code>prior</code> chosen, is less prone to overfitting. Formally, the learned encoding for the jth category <span class="math inline">\(u_{ij}\)</span> is now:</p>
+<p>The <code>prior</code> paramter in <code>target_encoding</code> allows us to address this issue through the use of Laplace smoothing. The idea of Laplace smoothing is to use a weighted average of the mean of the response variable and the conditional mean per each category. The result is a smoothed estimate that, with a suitable <code>prior</code> chosen, is less prone to overfitting. Formally, the learned encoding for the jth category <span class="math inline">\(u_{j}\)</span> is now:</p>
 <p><span class="math display">\[u_{j} = \frac{\sum_{i=1}^{N} y_{ij} + \text{prior} \times \bar x}{N + \text{prior}},\]</span> where <span class="math inline">\(\bar x\)</span> is the mean of the response, and <span class="math inline">\(N\)</span> is the total number of observations belogning to category <span class="math inline">\(j\)</span>. Thus, a larger <code>prior</code> parameter places more weight on the group mean <span class="math inline">\(\bar x\)</span>, whereas a lower prior fully trusts the data.</p>
 <p>If one repeats the example above but with a prior of 5:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">frame_with_encodings &lt;-<span class="st"> </span><span class="kw"><a href="../reference/target_encoder.html">target_encoder</a></span>(</a>

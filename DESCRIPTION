@@ -1,6 +1,6 @@
 Package: encodeR
 Title: A collection of categorical encoders in R
-Version: 0.0.0.9000
+Version: 1.2.0
 Authors@R: 
     c(person(given = "Brayden",
            family = "Tang",
@@ -22,7 +22,7 @@ Description: Employs many modern ways to encode categorical features to hopefull
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Imports: 
     dplyr,
     readr,

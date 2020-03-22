@@ -14,33 +14,41 @@ conjugate_encoder(
 )
 }
 \arguments{
-\item{X_train}{A tibble representing the training data set containing some categorical features/columns.}
+\item{X_train}{A `tibble` or `data.frame` representing the training data set
+containing some categorical features/columns.}
 
-\item{X_test}{An optional tibble representing the test set, containing some set of categorical features/columns. Default = NULL.}
+\item{X_test}{A `tibble` or `data.frame` representing the test set,
+containing some set of categorical features/columns.}
 
-\item{y}{A numeric vector or character vector representing the target variable. If the objective is "binary", then the vector
-should only contain two unique values.}
+\item{y}{A numeric vector or character vector representing the target
+variable. If the objective is "binary", then the vector should only contain
+two unique values.}
 
-\item{cat_columns}{A character vector containing the names of the categorical columns in the tibble
-that should be encoded.}
+\item{cat_columns}{A character vector containing the names of the
+categorical columns in the tibble that should be encoded.}
 
-\item{prior_params}{A list with named parameters that specify the prior assumed. For regression, this requires
-a dictionary with four keys and four values: mu, vega, alpha, beta. All must be real numbers, alpha should be greater than 0, beta and vega should be greater than 0.
-mu can be negative. For binary classification, this requires a list with two keys and two values: alpha, beta. All must be real
-numbers and be greater than 0.}
+\item{prior_params}{A list with named parameters that specify the
+prior assumed. For regression, this requires a list with named values:
+ mu, vega, alpha, beta. All must be real numbers,
+alpha should be greater than 0, beta and vega should be greater than 0.
+mu can be negative. For binary classification, this requires a list with
+four named values: alpha, beta. All must be real numbers and be greater than
+0.}
 
-\item{objective}{A string, either "regression" or "binary" specifying the problem. Default is regression.
-For regression, only the uniform quantization method is incorporated here for simplicity.}
+\item{objective}{A string, either "regression" or "binary" specifying the
+problem. Default is regression.}
 }
 \value{
-A list containing with processed training and test sets, in which the named categorical
-columns are replaced with their encodings. For regression, the encoder will add one additional dimension to the original training set since the
-assumed prior distribution is two dimensional.
+A list containing with processed training and test sets, in which
+the named categorical columns are replaced with their encodings. For
+regression, the encoder will add one additional dimension to the original
+training set since the assumed prior distribution is two dimensional.
 }
 \description{
-This function encodes categorical variables by fitting a posterior distribution per each category
-to the target variable y, using a known conjugate-prior. The resulting mean(s) of each posterior distribution
-per each category are used as the encodings.
+This function encodes categorical variables by fitting a posterior
+ distribution per each category to the target variable y, using a
+ known conjugate-prior. The resulting mean(s) of each posterior distribution
+ per each category are used as the encodings.
 }
 \examples{
 conjugate_encoder(

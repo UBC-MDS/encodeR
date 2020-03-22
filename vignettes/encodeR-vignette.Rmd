@@ -122,7 +122,7 @@ Note that when using `target_encoder` that if there are categories that do not a
 
 Target encoding is highly susceptible to overfitting since the estimated relationship between the categories in the training set may not necessarily be true in general. 
 
-The `prior` paramter in `target_encoding` allows us to address this issue through the use of Laplace smoothing. The idea of Laplace smoothing is to use a weighted average of the mean of the response variable and the conditional mean per each category. The result is a smoothed estimate that, with a suitable `prior` chosen, is less prone to overfitting. Formally, the learned encoding for the jth category $u_{ij}$ is now:
+The `prior` paramter in `target_encoding` allows us to address this issue through the use of Laplace smoothing. The idea of Laplace smoothing is to use a weighted average of the mean of the response variable and the conditional mean per each category. The result is a smoothed estimate that, with a suitable `prior` chosen, is less prone to overfitting. Formally, the learned encoding for the jth category $u_{j}$ is now:
 
 $$u_{j} = \frac{\sum_{i=1}^{N} y_{ij} + \text{prior} \times \bar x}{N + \text{prior}},$$
 where $\bar x$ is the mean of the response, and $N$ is the total number of observations belogning to category $j$. Thus, a larger `prior` parameter places more weight on the group mean $\bar x$, whereas a lower prior fully trusts the data.
