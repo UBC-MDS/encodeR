@@ -65,6 +65,23 @@ test_that("Function does not throw an error if we input invalid arguments", {
     prior_params = list(beta = 5, alpha = 100),
     objective = "binary"))
 
+  # Test for non-numeric y, but regression specified
+  expect_error(conjugate_encoder(
+    X_train = test_data,
+    X_test = test_data,
+    y = as.character(test_data$target_bin),
+    cat_columns = c("feature_cat_chr"),
+    prior_params = list(mu = 1, vega = 2, alpha = 3, beta = 2),
+    objective = "regression"))
+
+  # Test that warning is raised if conditional variance fit is NA
+  expect_warning(conjugate_encoder(
+    X_train = test_data[1, ],
+    y = test_data$target_cont[1],
+    cat_columns = c("feature_cat_chr"),
+    prior_params = list(mu = 1, vega = 2, alpha = 3, beta = 2),
+    objective = "regression"))
+
 })
 
 test_that("Function does not run if we pass factors or characters as our

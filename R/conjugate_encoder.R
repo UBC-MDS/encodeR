@@ -76,11 +76,6 @@ conjugate_encoder <- function(X_train, X_test = NULL, y, cat_columns,
       beta <- prior_params$beta
       n <- nrow(X_train)
 
-      if (n == 1) {
-        stop("Cannot encode values when we only have one sample for regression
-             tasks.")
-      }
-
       for (i in seq_along(cat_columns)) {
 
         column <- cat_columns[i]
